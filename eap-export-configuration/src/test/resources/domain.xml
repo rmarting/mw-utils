@@ -1,0 +1,3385 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<domain xmlns="urn:jboss:domain:1.5">
+
+    <extensions>
+        <extension module="org.jboss.as.clustering.infinispan"/>
+        <extension module="org.jboss.as.clustering.jgroups"/>
+        <extension module="org.jboss.as.cmp"/>
+        <extension module="org.jboss.as.configadmin"/>
+        <extension module="org.jboss.as.connector"/>
+        <extension module="org.jboss.as.ee"/>
+        <extension module="org.jboss.as.ejb3"/>
+        <extension module="org.jboss.as.jacorb"/>
+        <extension module="org.jboss.as.jaxr"/>
+        <extension module="org.jboss.as.jaxrs"/>
+        <extension module="org.jboss.as.jdr"/>
+        <extension module="org.jboss.as.jmx"/>
+        <extension module="org.jboss.as.jpa"/>
+        <extension module="org.jboss.as.jsf"/>
+        <extension module="org.jboss.as.jsr77"/>
+        <extension module="org.jboss.as.logging"/>
+        <extension module="org.jboss.as.mail"/>
+        <extension module="org.jboss.as.messaging"/>
+        <extension module="org.jboss.as.modcluster"/>
+        <extension module="org.jboss.as.naming"/>
+        <extension module="org.jboss.as.pojo"/>
+        <extension module="org.jboss.as.remoting"/>
+        <extension module="org.jboss.as.sar"/>
+        <extension module="org.jboss.as.security"/>
+        <extension module="org.jboss.as.threads"/>
+        <extension module="org.jboss.as.transactions"/>
+        <extension module="org.jboss.as.web"/>
+        <extension module="org.jboss.as.webservices"/>
+        <extension module="org.jboss.as.weld"/>
+    </extensions>
+
+    <system-properties>
+        <property name="java.net.preferIPv4Stack" value="true"/>
+        <property name="org.apache.cxf.logging.enabled" value="true" boot-time="true"/>
+        <property name="org.apache.tomcat.util.http.Parameters.MAX_COUNT" value="4096" boot-time="true"/>
+    </system-properties>
+
+    <management>
+        <access-control provider="simple">
+            <role-mapping>
+                <role name="SuperUser">
+                    <include>
+                        <user name="$local"/>
+                    </include>
+                </role>
+            </role-mapping>
+        </access-control>
+    </management>
+
+    <profiles>
+        <profile name="internet">
+            <subsystem xmlns="urn:jboss:domain:logging:1.3">
+                <size-rotating-file-handler name="FILESIZE" autoflush="true">
+                    <level name="INFO"/>
+                    <formatter>
+                        <pattern-formatter pattern="%d{dd/MM/yyyy HH:mm:ss,SSS} %-5p [%c] (%t) %s%E%n"/>
+                    </formatter>
+                    <file relative-to="jboss.server.log.dir" path="server.log"/>
+                    <rotate-size value="8m"/>
+                    <max-backup-index value="10"/>
+                    <append value="true"/>
+                </size-rotating-file-handler>
+                <logger category="org.apache.coyote">
+                    <level name="INFO"/>
+                </logger>
+                <logger category="com.arjuna">
+                    <level name="INFO"/>
+                </logger>
+                <logger category="org.apache.tomcat.util.modeler">
+                    <level name="INFO"/>
+                </logger>
+                <logger category="org.jboss.as.config">
+                    <level name="INFO"/>
+                </logger>
+                <logger category="sun.rmi">
+                    <level name="WARN"/>
+                </logger>
+                <logger category="jacorb">
+                    <level name="INFO"/>
+                </logger>
+                <logger category="jacorb.config">
+                    <level name="INFO"/>
+                </logger>
+                <logger category="net.bizkaia.seguridad.login.frontend.login.WebSealLoginModule" use-parent-handlers="true">
+                    <level name="ALL"/>
+                </logger>
+                <logger category="com.ibm.security.websso" use-parent-handlers="true">
+                    <level name="ALL"/>
+                </logger>
+                <root-logger>
+                    <level name="INFO"/>
+                    <handlers>
+                        <handler name="FILESIZE"/>
+                    </handlers>
+                </root-logger>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:configadmin:1.0"/>
+            <subsystem xmlns="urn:jboss:domain:datasources:1.1">
+                <datasources>
+                    <datasource jta="true" jndi-name="java:/db2/DB2" pool-name="DB2" enabled="true" use-ccm="true">
+                        <connection-url>jdbc:StarSQL_JDBC://db2server:446/DSND</connection-url>
+                        <driver-class>com.starsql.jdbc.SQDriver</driver-class>
+                        <driver>starsql</driver>
+                        <pool>
+                            <min-pool-size>2</min-pool-size>
+                            <max-pool-size>20</max-pool-size>
+                        </pool>
+                        <security>
+                            <user-name>WDWEBUS1</user-name>
+                            <password>1247WTHD</password>
+                        </security>
+                        <validation>
+                            <check-valid-connection-sql>select 1 from SYSIBM.SYSDUMMY1</check-valid-connection-sql>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </datasource>
+                    <datasource jta="true" jndi-name="java:/sqlserver/DBMLDCLM" pool-name="DBMLDCLM" enabled="true" use-ccm="true">
+                        <connection-url>jdbc:sqlserver://sqldesarrollo.lantik.bfa\desarrollo:2794;DatabaseName=DBMLDCLM</connection-url>
+                        <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
+                        <driver>sqlserver2005</driver>
+                        <security>
+                            <user-name>USRSQLD1</user-name>
+                            <password>WTHD1247</password>
+                        </security>
+                    </datasource>
+                    <datasource jta="true" jndi-name="java:/sqlserver/DBIWLog" pool-name="DBIWLog" enabled="true" use-ccm="true">
+                        <connection-url>jdbc:sqlserver://sqldesarrollo.lantik.bfa\desarrollo:2794;DatabaseName=DBIWLOG</connection-url>
+                        <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
+                        <driver>sqlserver2005</driver>
+                        <security>
+                            <user-name>USRSQLD1</user-name>
+                            <password>WTHD1247</password>
+                        </security>
+                    </datasource>
+                    <datasource jta="true" jndi-name="java:/sqlserver/DBIWLogIntra" pool-name="DBIWLogIntra" enabled="true" use-ccm="true">
+                        <connection-url>jdbc:sqlserver://sqldesarrollo.lantik.bfa\desarrollo:2794;DatabaseName=DBIWLogIntra</connection-url>
+                        <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
+                        <driver>sqlserver2005</driver>
+                        <security>
+                            <user-name>USRSQLD1</user-name>
+                            <password>WTHD1247</password>
+                        </security>
+                    </datasource>
+                    <datasource jta="true" jndi-name="java:/sqlserver/DBIRTEST05" pool-name="DBIRTEST05" enabled="true" use-ccm="true">
+                        <connection-url>jdbc:sqlserver://sqldesarrollo.lantik.bfa\desarrollo:2794;DatabaseName=DBIRTEST</connection-url>
+                        <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
+                        <driver>sqlserver2005</driver>
+                        <security>
+                            <user-name>USRSQLD1</user-name>
+                            <password>WTHD1247</password>
+                        </security>
+                    </datasource>
+                    <datasource jta="true" jndi-name="java:/sqlserver/DBKEDATA" pool-name="DBKEDATA" enabled="true" use-ccm="true">
+                        <connection-url>jdbc:sqlserver://sqldesarrollo.lantik.bfa\desarrollo:2794;DatabaseName=DBKEDATA</connection-url>
+                        <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
+                        <driver>sqlserver2005</driver>
+                        <security>
+                            <user-name>WUSRWEBD</user-name>
+                            <password>javig</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </datasource>
+                    <datasource jta="true" jndi-name="java:/sqlserver/DBIY20UDUdalnet" pool-name="DBIY20UDUdalnet" enabled="true" use-ccm="true">
+                        <connection-url>jdbc:sqlserver://sqldesarrollo.lantik.bfa\desarrollo:3151;DatabaseName=DBIY20UDUdalnet</connection-url>
+                        <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
+                        <driver>sqlserver2005</driver>
+                        <security>
+                            <user-name>publector</user-name>
+                            <password>publector</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </datasource>
+                    <datasource jta="true" jndi-name="java:/sqlserver/DBIRCOMU" pool-name="DBIRCOMU" enabled="true" use-ccm="true">
+                        <connection-url>jdbc:sqlserver://sqldesarrollo.lantik.bfa\desarrollo:2794;DatabaseName=DBIRCOMU</connection-url>
+                        <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
+                        <driver>sqlserver2005</driver>
+                        <security>
+                            <user-name>WUSRWEBD</user-name>
+                            <password>javig</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </datasource>
+                    <datasource jta="true" jndi-name="java:/sqlserver/DBUDDATO" pool-name="DBUDDATO" enabled="true" use-ccm="true">
+                        <connection-url>jdbc:sqlserver://sqldesarrollo.lantik.bfa\desarrollo:2794;DatabaseName=DBUDDATO</connection-url>
+                        <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
+                        <driver>sqlserver2005</driver>
+                        <security>
+                            <user-name>WUSRWEBD</user-name>
+                            <password>javig</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </datasource>
+                    <datasource jta="true" jndi-name="java:/sqlserver/mg84a" pool-name="mg84a" enabled="true" use-ccm="true">
+                        <connection-url>jdbc:sqlserver://sqldesarrollo.lantik.bfa\desarrollo:2794;DatabaseName=DBMLDCLM</connection-url>
+                        <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
+                        <driver>sqlserver2005</driver>
+                        <security>
+                            <user-name>WUSRWEBD</user-name>
+                            <password>javig</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </datasource>
+                    <xa-datasource jndi-name="java:/jdbc/db2/DB2" pool-name="DB2" enabled="true" use-ccm="true">
+                        <xa-datasource-property name="collection">
+                            databasecollection
+                        </xa-datasource-property>
+                        <xa-datasource-property name="databaseName">
+                            DSND
+                        </xa-datasource-property>
+                        <xa-datasource-property name="serverName">
+                            db2server
+                        </xa-datasource-property>
+                        <xa-datasource-property name="portNumber">
+                            446
+                        </xa-datasource-property>
+                        <xa-datasource-class>com.starsql.datasource.SQXADataSource</xa-datasource-class>
+                        <driver>starsql</driver>
+                        <xa-pool>
+                            <is-same-rm-override>false</is-same-rm-override>
+                            <interleaving>false</interleaving>
+                            <pad-xid>false</pad-xid>
+                            <wrap-xa-resource>false</wrap-xa-resource>
+                        </xa-pool>
+                        <security>
+                            <user-name>WUSRWEBD</user-name>
+                            <password>javig</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </xa-datasource>
+                    <drivers>
+                        <driver name="starsql" module="com.starsql">
+                            <driver-class>com.starsql.jdbc.SQDriver</driver-class>
+                            <xa-datasource-class>com.starsql.datasource.SQXADataSource</xa-datasource-class>
+                        </driver>
+                        <driver name="sqlserver2005" module="com.sqlserver"/>
+                    </drivers>
+                </datasources>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:ee:1.1">
+                <global-modules>
+                    <module name="com.starsql" slot="main"/>
+                </global-modules>
+                <spec-descriptor-property-replacement>true</spec-descriptor-property-replacement>
+                <jboss-descriptor-property-replacement>true</jboss-descriptor-property-replacement>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:ejb3:1.4">
+                <session-bean>
+                    <stateless>
+                        <bean-instance-pool-ref pool-name="slsb-strict-max-pool"/>
+                    </stateless>
+                    <stateful default-access-timeout="5000" cache-ref="simple" clustered-cache-ref="clustered"/>
+                    <singleton default-access-timeout="5000"/>
+                </session-bean>
+                <mdb>
+                    <resource-adapter-ref resource-adapter-name="activemq-rar.rar"/>
+                    <bean-instance-pool-ref pool-name="mdb-strict-max-pool"/>
+                </mdb>
+                <pools>
+                    <bean-instance-pools>
+                        <strict-max-pool name="slsb-strict-max-pool" max-pool-size="20" instance-acquisition-timeout="5" instance-acquisition-timeout-unit="MINUTES"/>
+                        <strict-max-pool name="mdb-strict-max-pool" max-pool-size="20" instance-acquisition-timeout="5" instance-acquisition-timeout-unit="MINUTES"/>
+                    </bean-instance-pools>
+                </pools>
+                <caches>
+                    <cache name="simple" aliases="NoPassivationCache"/>
+                    <cache name="passivating" passivation-store-ref="file" aliases="SimpleStatefulCache"/>
+                    <cache name="clustered" passivation-store-ref="infinispan" aliases="StatefulTreeCache"/>
+                </caches>
+                <passivation-stores>
+                    <file-passivation-store name="file"/>
+                    <cluster-passivation-store name="infinispan" cache-container="ejb"/>
+                </passivation-stores>
+                <async thread-pool-name="default"/>
+                <timer-service thread-pool-name="default">
+                    <data-store path="timer-service-data" relative-to="jboss.server.data.dir"/>
+                </timer-service>
+                <remote connector-ref="remoting-connector" thread-pool-name="default"/>
+                <thread-pools>
+                    <thread-pool name="default">
+                        <max-threads count="10"/>
+                        <keepalive-time time="100" unit="milliseconds"/>
+                    </thread-pool>
+                </thread-pools>
+                <default-security-domain value="other"/>
+                <default-missing-method-permissions-deny-access value="true"/>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:infinispan:1.4">
+                <cache-container name="singleton" aliases="cluster ha-partition" default-cache="default">
+                    <transport lock-timeout="60000"/>
+                    <replicated-cache name="default" mode="SYNC" batching="true">
+                        <locking isolation="REPEATABLE_READ"/>
+                    </replicated-cache>
+                </cache-container>
+                <cache-container name="web" aliases="standard-session-cache" default-cache="repl" module="org.jboss.as.clustering.web.infinispan">
+                    <transport lock-timeout="60000"/>
+                    <replicated-cache name="repl" mode="ASYNC" batching="true">
+                        <file-store/>
+                    </replicated-cache>
+                    <replicated-cache name="sso" mode="SYNC" batching="true"/>
+                    <distributed-cache name="dist" l1-lifespan="0" mode="ASYNC" batching="true">
+                        <file-store/>
+                    </distributed-cache>
+                </cache-container>
+                <cache-container name="ejb" aliases="sfsb sfsb-cache" default-cache="repl" module="org.jboss.as.clustering.ejb3.infinispan">
+                    <transport lock-timeout="60000"/>
+                    <replicated-cache name="repl" mode="ASYNC" batching="true">
+                        <eviction strategy="LRU" max-entries="10000"/>
+                        <file-store/>
+                    </replicated-cache>
+                    <replicated-cache name="remote-connector-client-mappings" mode="SYNC" batching="true"/>
+                    <distributed-cache name="dist" l1-lifespan="0" mode="ASYNC" batching="true">
+                        <eviction strategy="LRU" max-entries="10000"/>
+                        <file-store/>
+                    </distributed-cache>
+                </cache-container>
+                <cache-container name="hibernate" default-cache="local-query" module="org.jboss.as.jpa.hibernate:4">
+                    <transport lock-timeout="60000"/>
+                    <local-cache name="local-query">
+                        <transaction mode="NONE"/>
+                        <eviction strategy="LRU" max-entries="10000"/>
+                        <expiration max-idle="100000"/>
+                    </local-cache>
+                    <invalidation-cache name="entity" mode="SYNC">
+                        <transaction mode="NON_XA"/>
+                        <eviction strategy="LRU" max-entries="10000"/>
+                        <expiration max-idle="100000"/>
+                    </invalidation-cache>
+                    <replicated-cache name="timestamps" mode="ASYNC">
+                        <transaction mode="NONE"/>
+                        <eviction strategy="NONE"/>
+                    </replicated-cache>
+                </cache-container>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:jaxrs:1.0"/>
+            <subsystem xmlns="urn:jboss:domain:jca:1.1">
+                <archive-validation enabled="true" fail-on-error="true" fail-on-warn="false"/>
+                <bean-validation enabled="true"/>
+                <default-workmanager>
+                    <short-running-threads>
+                        <core-threads count="50"/>
+                        <queue-length count="50"/>
+                        <max-threads count="50"/>
+                        <keepalive-time time="10" unit="seconds"/>
+                    </short-running-threads>
+                    <long-running-threads>
+                        <core-threads count="50"/>
+                        <queue-length count="50"/>
+                        <max-threads count="50"/>
+                        <keepalive-time time="10" unit="seconds"/>
+                    </long-running-threads>
+                </default-workmanager>
+                <cached-connection-manager debug="true" error="false"/>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:jdr:1.0"/>
+            <subsystem xmlns="urn:jboss:domain:jgroups:1.1" default-stack="tcp">
+                <stack name="udp">
+                    <transport type="UDP" socket-binding="jgroups-udp"/>
+                    <protocol type="PING"/>
+                    <protocol type="MERGE3"/>
+                    <protocol type="FD_SOCK" socket-binding="jgroups-udp-fd"/>
+                    <protocol type="FD"/>
+                    <protocol type="VERIFY_SUSPECT"/>
+                    <protocol type="pbcast.NAKACK"/>
+                    <protocol type="UNICAST2"/>
+                    <protocol type="pbcast.STABLE"/>
+                    <protocol type="pbcast.GMS"/>
+                    <protocol type="UFC"/>
+                    <protocol type="MFC"/>
+                    <protocol type="FRAG2"/>
+                    <protocol type="RSVP"/>
+                </stack>
+                <stack name="tcp">
+                    <transport type="TCP" socket-binding="jgroups-tcp"/>
+                    <protocol type="TCPPING">
+                        <property name="initial_hosts">
+                            ${tcp_cluster.initial_host}
+                        </property>
+                        <property name="num_initial_members">
+                            2
+                        </property>
+                        <property name="port_range">
+                            0
+                        </property>
+                        <property name="timeout">
+                            2000
+                        </property>
+                    </protocol>
+                    <protocol type="MERGE2"/>
+                    <protocol type="FD_SOCK" socket-binding="jgroups-tcp-fd"/>
+                    <protocol type="FD"/>
+                    <protocol type="VERIFY_SUSPECT"/>
+                    <protocol type="pbcast.NAKACK"/>
+                    <protocol type="UNICAST2"/>
+                    <protocol type="pbcast.STABLE"/>
+                    <protocol type="pbcast.GMS"/>
+                    <protocol type="UFC"/>
+                    <protocol type="MFC"/>
+                    <protocol type="FRAG2"/>
+                    <protocol type="RSVP"/>
+                </stack>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:jmx:1.3">
+                <expose-resolved-model/>
+                <expose-expression-model/>
+                <remoting-connector use-management-endpoint="false"/>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:jpa:1.1">
+                <jpa default-datasource="" default-extended-persistence-inheritance="DEEP"/>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:jsf:1.0"/>
+            <subsystem xmlns="urn:jboss:domain:mail:1.1">
+                <mail-session jndi-name="java:jboss/mail/Default">
+                    <smtp-server outbound-socket-binding-ref="mail-smtp"/>
+                </mail-session>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:modcluster:1.1">
+                <mod-cluster-config advertise-socket="modcluster" proxy-list="${httpd.modcluster}" advertise="false" node-timeout="120" connector="ajp">
+                    <dynamic-load-provider>
+                        <load-metric type="busyness"/>
+                    </dynamic-load-provider>
+                </mod-cluster-config>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:naming:1.4">
+                <remote-naming/>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:pojo:1.0"/>
+            <subsystem xmlns="urn:jboss:domain:remoting:1.1">
+                <connector name="remoting-connector" socket-binding="remoting" security-realm="ApplicationRealm"/>
+                <outbound-connections>
+                    <remote-outbound-connection name="remote-ejb-connection-d1vappjb01-negocio" outbound-socket-binding-ref="remote-ejb-d1vappjb01-negocio" username="ejbclient" security-realm="ejb-security-realm">
+                        <properties>
+                            <property name="SASL_POLICY_NOANONYMOUS" value="false"/>
+                            <property name="SSL_ENABLED" value="false"/>
+                        </properties>
+                    </remote-outbound-connection>
+                    <remote-outbound-connection name="remote-ejb-connection-d1vappjb02-negocio" outbound-socket-binding-ref="remote-ejb-d1vappjb02-negocio" username="ejbclient" security-realm="ejb-security-realm">
+                        <properties>
+                            <property name="SASL_POLICY_NOANONYMOUS" value="false"/>
+                            <property name="SSL_ENABLED" value="false"/>
+                        </properties>
+                    </remote-outbound-connection>
+                </outbound-connections>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:resource-adapters:1.1">
+                <resource-adapters>
+                    <resource-adapter id="activemq-rar.rar">
+                        <archive>
+                            activemq-rar.rar
+                        </archive>
+                        <transaction-support>XATransaction</transaction-support>
+                        <config-property name="Password">
+                            password1!
+                        </config-property>
+                        <config-property name="UserName">
+                            admin
+                        </config-property>
+                        <config-property name="ServerUrl">
+                            failover:(tcp://D1VAPPFSW.bizkaiko.aldundia:50000)?jms.rmIdFromConnectionId=true&amp;maxReconnectAttempts=10
+                        </config-property>
+                        <connection-definitions>
+                            <connection-definition class-name="org.apache.activemq.ra.ActiveMQManagedConnectionFactory" jndi-name="java:/RemoteJmsXA" enabled="true" pool-name="ConnectionFactory">
+                                <xa-pool>
+                                    <min-pool-size>10</min-pool-size>
+                                    <max-pool-size>100</max-pool-size>
+                                    <prefill>false</prefill>
+                                    <is-same-rm-override>false</is-same-rm-override>
+                                </xa-pool>
+                                <recovery>
+                                    <recover-credential>
+                                        <user-name>admin</user-name>
+                                        <password>password1!</password>
+                                    </recover-credential>
+                                    <recover-plugin class-name="org.jboss.jca.core.recovery.ConfigurableRecoveryPlugin">
+                                        <config-property name="enableIsValid">
+                                            false
+                                        </config-property>
+                                        <config-property name="isValidOverride">
+                                            true
+                                        </config-property>
+                                    </recover-plugin>
+                                </recovery>
+                            </connection-definition>
+                        </connection-definitions>
+                    </resource-adapter>
+                    <resource-adapter id="wmq.jmsra.rar">
+                        <archive>
+                            wmq.jmsra.rar
+                        </archive>
+                        <transaction-support>XATransaction</transaction-support>
+                        <connection-definitions>
+                            <connection-definition class-name="com.ibm.mq.connector.outbound.ManagedConnectionFactoryImpl" jndi-name="java:/MQRemoteJmsXA" pool-name="ConnectionFactory">
+                                <config-property name="port">
+                                    1414
+                                </config-property>
+                                <config-property name="hostName">
+                                    db2server
+                                </config-property>
+                                <config-property name="username">
+                                    WDWASMQ1
+                                </config-property>
+                                <config-property name="password">
+                                    h35053ti
+                                </config-property>
+                                <config-property name="channel">
+                                    DESA.SVRCONN.TCP
+                                </config-property>
+                                <config-property name="transportType">
+                                    CLIENT
+                                </config-property>
+                                <config-property name="queueManager">
+                                    CSQ1
+                                </config-property>
+                                <xa-pool>
+                                    <min-pool-size>10</min-pool-size>
+                                    <max-pool-size>100</max-pool-size>
+                                    <prefill>false</prefill>
+                                    <is-same-rm-override>false</is-same-rm-override>
+                                </xa-pool>
+                                <recovery>
+                                    <recover-credential>
+                                        <user-name>WDWASMQ1</user-name>
+                                        <password>h35053ti</password>
+                                    </recover-credential>
+                                    <recover-plugin class-name="org.jboss.jca.core.recovery.ConfigurableRecoveryPlugin">
+                                        <config-property name="enableIsValid">
+                                            false
+                                        </config-property>
+                                        <config-property name="isValidOverride">
+                                            true
+                                        </config-property>
+                                    </recover-plugin>
+                                </recovery>
+                            </connection-definition>
+                        </connection-definitions>
+                        <admin-objects>
+                            <admin-object class-name="com.ibm.mq.connector.outbound.MQQueueProxy" jndi-name="java:/jms/cola/EnvioSMS" pool-name="EnvioSMS">
+                                <config-property name="baseQueueName">
+                                    CSQ1.SRSM.ENVIO
+                                </config-property>
+                            </admin-object>
+                        </admin-objects>
+                    </resource-adapter>
+                </resource-adapters>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:sar:1.0"/>
+            <subsystem xmlns="urn:jboss:domain:security:1.2">
+                <security-domains>
+                    <security-domain name="other" cache-type="default">
+                        <authentication>
+                            <login-module code="Remoting" flag="optional">
+                                <module-option name="password-stacking" value="useFirstPass"/>
+                            </login-module>
+                            <login-module code="RealmDirect" flag="required">
+                                <module-option name="password-stacking" value="useFirstPass"/>
+                            </login-module>
+                        </authentication>
+                    </security-domain>
+                    <security-domain name="jboss-web-policy" cache-type="default">
+                        <authorization>
+                            <policy-module code="Delegating" flag="required"/>
+                        </authorization>
+                    </security-domain>
+                    <security-domain name="jboss-ejb-policy" cache-type="default">
+                        <authorization>
+                            <policy-module code="Delegating" flag="required"/>
+                        </authorization>
+                    </security-domain>
+                    <security-domain name="TAM">
+                        <authentication>
+                            <login-module code="net.bizkaia.seguridad.login.frontend.login.WebSealLoginModule" flag="required">
+                                <module-option name="idType" value="iv-creds"/>
+                                <module-option name="buildRolesFrom" value="PDPrincipal"/>
+                                <module-option name="reqHdrList" value="iv-user"/>
+                                <module-option name="loginID" value="jboss-sso-user"/>
+                                <module-option name="pdconfig" value="file:///opt/jboss/jboss-eap/domain/configuration/jboss-sso.properties"/>
+                                <module-option name="ssoPwdExpiry" value="1200"/>
+                            </login-module>
+                        </authentication>
+                    </security-domain>
+                    <security-domain name="TAM_INTERNET">
+                        <authentication>
+                            <login-module code="net.bizkaia.seguridad.login.frontend.login.WebSealLoginModule" flag="required">
+                                <module-option name="idType" value="iv-creds"/>
+                                <module-option name="buildRolesFrom" value="PDPrincipal"/>
+                                <module-option name="reqHdrList" value="iv-user"/>
+                                <module-option name="loginID" value="jboss-sso-user"/>
+                                <module-option name="pdconfig" value="file:///opt/jboss/jboss-eap/domain/configuration/jboss-sso.properties"/>
+                            </login-module>
+                        </authentication>
+                    </security-domain>
+                    <security-domain name="SecTestWeb" cache-type="default"/>
+                    <security-domain name="BIGIP" cache-type="default">
+                        <authentication>
+                            <login-module code="net.bizkaia.seguridad.login.frontend.login.headerLoginModule" flag="required"/>
+                        </authentication>
+                    </security-domain>
+                </security-domains>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:threads:1.1"/>
+            <subsystem xmlns="urn:jboss:domain:transactions:1.4">
+                <core-environment>
+                    <process-id>
+                        <uuid/>
+                    </process-id>
+                </core-environment>
+                <recovery-environment socket-binding="txn-recovery-environment" status-socket-binding="txn-status-manager"/>
+                <coordinator-environment default-timeout="300"/>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:web:1.5" default-virtual-server="default-host" instance-id="${jboss.node.name}" native="false">
+                <connector name="http" protocol="HTTP/1.1" scheme="http" socket-binding="http" max-post-size="4194304"/>
+                <connector name="ajp" protocol="AJP/1.3" scheme="http" socket-binding="ajp" max-post-size="4194304"/>
+                <virtual-server name="default-host" enable-welcome-root="false"/>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:webservices:1.2">
+                <modify-wsdl-address>true</modify-wsdl-address>
+                <wsdl-host>desajboss.aldundia.bfa</wsdl-host>
+                <wsdl-port>80</wsdl-port>
+                <endpoint-config name="Standard-Endpoint-Config"/>
+                <endpoint-config name="Recording-Endpoint-Config">
+                    <pre-handler-chain name="recording-handlers" protocol-bindings="##SOAP11_HTTP ##SOAP11_HTTP_MTOM ##SOAP12_HTTP ##SOAP12_HTTP_MTOM">
+                        <handler name="RecordingHandler" class="org.jboss.ws.common.invocation.RecordingServerHandler"/>
+                    </pre-handler-chain>
+                </endpoint-config>
+                <client-config name="Standard-Client-Config"/>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:weld:1.0"/>
+        </profile>
+        <profile name="intranet">
+            <subsystem xmlns="urn:jboss:domain:logging:1.3">
+                <size-rotating-file-handler name="FILESIZE" autoflush="true">
+                    <level name="INFO"/>
+                    <formatter>
+                        <pattern-formatter pattern="%d{dd/MM/yyyy HH:mm:ss,SSS} %-5p [%c] (%t) %s%E%n"/>
+                    </formatter>
+                    <file relative-to="jboss.server.log.dir" path="server.log"/>
+                    <rotate-size value="8m"/>
+                    <max-backup-index value="10"/>
+                    <append value="true"/>
+                </size-rotating-file-handler>
+                <logger category="org.apache.coyote">
+                    <level name="INFO"/>
+                </logger>
+                <logger category="com.arjuna">
+                    <level name="TRACE"/>
+                </logger>
+                <logger category="org.apache.tomcat.util.modeler">
+                    <level name="INFO"/>
+                </logger>
+                <logger category="org.jboss.as.config">
+                    <level name="INFO"/>
+                </logger>
+                <logger category="sun.rmi">
+                    <level name="DEBUG"/>
+                </logger>
+                <logger category="jacorb">
+                    <level name="INFO"/>
+                </logger>
+                <logger category="jacorb.config">
+                    <level name="INFO"/>
+                </logger>
+                <logger category="com.ibm.security.websso" use-parent-handlers="true">
+                    <level name="ALL"/>
+                </logger>
+                <logger category="org.jboss.ejb3" use-parent-handlers="true">
+                    <level name="FINER"/>
+                    <handlers>
+                        <handler name="FILESIZE"/>
+                    </handlers>
+                </logger>
+                <logger category="org.jboss.web" use-parent-handlers="true">
+                    <level name="INFO"/>
+                    <handlers>
+                        <handler name="FILESIZE"/>
+                    </handlers>
+                </logger>
+                <logger category="net.bizkaia.seguridad.login.frontend.login" use-parent-handlers="true">
+                    <level name="INFO"/>
+                </logger>
+                <logger category="net.bizkaia.seguridad.seea003c" use-parent-handlers="true">
+                    <level name="ALL"/>
+                </logger>
+                <logger category="net.bizkaia.bide.seguridad.bigIp.WebAgentBigIp" use-parent-handlers="true">
+                    <level name="ALL"/>
+                </logger>
+                <logger category="net.bizkaia.bide.test" use-parent-handlers="true">
+                    <level name="ALL"/>
+                </logger>
+                <logger category="net.bizkaia.pdf" use-parent-handlers="true">
+                    <level name="ALL"/>
+                </logger>
+                <logger category="org.jboss.jca" use-parent-handlers="true">
+                    <level name="TRACE"/>
+                    <handlers>
+                        <handler name="FILESIZE"/>
+                    </handlers>
+                </logger>
+                <logger category="org.jboss.jca.core.connectionmanager.pool.strategy">
+                    <level name="DEBUG"/>
+                </logger>
+                <logger category="org.jboss.as.connector" use-parent-handlers="true">
+                    <level name="TRACE"/>
+                </logger>
+                <root-logger>
+                    <level name="INFO"/>
+                    <handlers>
+                        <handler name="FILESIZE"/>
+                    </handlers>
+                </root-logger>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:configadmin:1.0"/>
+            <subsystem xmlns="urn:jboss:domain:datasources:1.1">
+                <datasources>
+                    <datasource jta="true" jndi-name="java:/db2/DB2" pool-name="ATOMSTAR1" enabled="true" use-ccm="true">
+                        <connection-url>jdbc:StarSQL_JDBC://db2server:446/DSND</connection-url>
+                        <driver-class>com.starsql.jdbc.SQDriver</driver-class>
+                        <driver>starsql</driver>
+                        <pool>
+                            <min-pool-size>1</min-pool-size>
+                            <max-pool-size>50</max-pool-size>
+                        </pool>
+                        <security>
+                            <user-name>WDWEBUS1</user-name>
+                            <password>1247WTHD</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>true</background-validation>
+                            <background-validation-millis>300000</background-validation-millis>
+                        </validation>
+                        <timeout>
+                            <set-tx-query-timeout>true</set-tx-query-timeout>
+                            <idle-timeout-minutes>20</idle-timeout-minutes>
+                            <query-timeout>180</query-timeout>
+                        </timeout>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </datasource>
+                    <datasource jta="true" jndi-name="java:/sqlserver/DBJRMAP_EMI" pool-name="DBJRMAP_EMI" enabled="true" use-ccm="true">
+                        <connection-url>jdbc:sqlserver://sqldesarrollo.lantik.bfa\desarrollo:2794;DatabaseName=DBJRMAP_EMI</connection-url>
+                        <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
+                        <driver>sqlserver2005</driver>
+                        <security>
+                            <user-name>USRSQLD1</user-name>
+                            <password>WTHD1247</password>
+                        </security>
+                    </datasource>
+                    <datasource jta="true" jndi-name="java:/sqlserver/DBIRSecaWeb" pool-name="DBIRSecaWeb" enabled="true" use-ccm="true">
+                        <connection-url>jdbc:sqlserver://sqldesarrollo.lantik.bfa\desarrollo:2794;DatabaseName=DBIRSecaWeb</connection-url>
+                        <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
+                        <driver>sqlserver2005</driver>
+                        <security>
+                            <user-name>USRSQLD1</user-name>
+                            <password>WTHD1247</password>
+                        </security>
+                    </datasource>
+                    <datasource jta="true" jndi-name="java:/sqlserver/DBJRMAP_REQ" pool-name="DBJRMAP_REQ" enabled="true" use-ccm="true">
+                        <connection-url>jdbc:sqlserver://sqldesarrollo.lantik.bfa\desarrollo:2794;DatabaseName=DBJRMAP_REQ</connection-url>
+                        <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
+                        <driver>sqlserver2005</driver>
+                        <security>
+                            <user-name>USRSQLD1</user-name>
+                            <password>WTHD1247</password>
+                        </security>
+                    </datasource>
+                    <datasource jta="true" jndi-name="java:/sqlserver/DBMLDCLM" pool-name="DBMLDCLM" enabled="true" use-ccm="true">
+                        <connection-url>jdbc:sqlserver://sqldesarrollo.lantik.bfa\desarrollo:2794;DatabaseName=DBMLDCLM</connection-url>
+                        <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
+                        <driver>sqlserver2005</driver>
+                        <security>
+                            <user-name>USRSQLD1</user-name>
+                            <password>WTHD1247</password>
+                        </security>
+                    </datasource>
+                    <datasource jta="true" jndi-name="java:/sqlserver/DBIWLog" pool-name="DBIWLog" enabled="false" use-ccm="true">
+                        <connection-url>jdbc:sqlserver://sqldesarrollo.lantik.bfa\desarrollo:2794;DatabaseName=DBIWLOG</connection-url>
+                        <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
+                        <driver>sqlserver2005</driver>
+                        <security>
+                            <user-name>USRSQLD1</user-name>
+                            <password>WTHD1247</password>
+                        </security>
+                    </datasource>
+                    <datasource jta="true" jndi-name="java:/sqlserver/DBIWLogIntra" pool-name="DBIWLogIntra" enabled="true" use-ccm="true">
+                        <connection-url>jdbc:sqlserver://sqldesarrollo.lantik.bfa\desarrollo:2794;DatabaseName=DBIWLogIntra</connection-url>
+                        <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
+                        <driver>sqlserver2005</driver>
+                        <security>
+                            <user-name>USRSQLD1</user-name>
+                            <password>WTHD1247</password>
+                        </security>
+                    </datasource>
+                    <datasource jta="true" jndi-name="java:/sqlserver/DBIRTEST05" pool-name="DBIRTEST05" enabled="true" use-ccm="true">
+                        <connection-url>jdbc:sqlserver://sqldesarrollo.lantik.bfa\desarrollo:2794;DatabaseName=DBIRTEST</connection-url>
+                        <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
+                        <driver>sqlserver2005</driver>
+                        <pool>
+                            <min-pool-size>1</min-pool-size>
+                            <max-pool-size>50</max-pool-size>
+                        </pool>
+                        <security>
+                            <user-name>USRSQLD1</user-name>
+                            <password>WTHD1247</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>true</background-validation>
+                            <background-validation-millis>300000</background-validation-millis>
+                        </validation>
+                        <timeout>
+                            <set-tx-query-timeout>true</set-tx-query-timeout>
+                            <idle-timeout-minutes>20</idle-timeout-minutes>
+                            <query-timeout>180</query-timeout>
+                        </timeout>
+                    </datasource>
+                    <datasource jta="true" jndi-name="java:/sqlserver/DBJRKCKR" pool-name="DBJRKCKR" enabled="true" use-ccm="true">
+                        <connection-url>jdbc:sqlserver://sqldesarrollo.lantik.bfa\desarrollo:2794;DatabaseName=DBJRKCKR</connection-url>
+                        <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
+                        <driver>sqlserver2005</driver>
+                        <security>
+                            <user-name>USRSQLD1</user-name>
+                            <password>WTHD1247</password>
+                        </security>
+                    </datasource>
+                    <datasource jta="true" jndi-name="java:/sqlserver/LOGICBFA" pool-name="LOGICBFA" enabled="true" use-ccm="true">
+                        <connection-url>jdbc:sqlserver://sqldesarrollo.lantik.bfa\desarrollo:2794;DatabaseName=DBLOGICD</connection-url>
+                        <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
+                        <driver>sqlserver2005</driver>
+                        <security>
+                            <user-name>USRSQLD1</user-name>
+                            <password>WTHD1247</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </datasource>
+                    <datasource jta="true" jndi-name="java:/sqlserver/DBSRWMES" pool-name="DBSRWMES" enabled="true" use-ccm="true">
+                        <connection-url>jdbc:sqlserver://sqldesarrollo.lantik.bfa\desarrollo:2794;DatabaseName=DBSRWMES</connection-url>
+                        <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
+                        <driver>sqlserver2005</driver>
+                        <security>
+                            <user-name>USRSQLD1</user-name>
+                            <password>WTHD1247</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </datasource>
+                    <datasource jta="true" jndi-name="java:/sqlserver/Sintesis" pool-name="Sintesis" enabled="true" use-ccm="true">
+                        <connection-url>jdbc:sqlserver://sqldesarrollo.lantik.bfa\desarrollo:2794;DatabaseName=Sintesis</connection-url>
+                        <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
+                        <driver>sqlserver2005</driver>
+                        <security>
+                            <user-name>USRSQLD1</user-name>
+                            <password>WTHD1247</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </datasource>
+                    <datasource jta="true" jndi-name="java:/sqlserver/DBMXEXAC" pool-name="DBMXEXAC" enabled="true" use-ccm="true">
+                        <connection-url>jdbc:sqlserver://sqldesarrollo.lantik.bfa\desarrollo:2794;DatabaseName=DBMXEXAC</connection-url>
+                        <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
+                        <driver>sqlserver2005</driver>
+                        <security>
+                            <user-name>WUSRWEBD</user-name>
+                            <password>javig</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </datasource>
+                    <datasource jta="true" jndi-name="java:/sqlserver/DBDAVLFT" pool-name="DBDAVLFT" enabled="true" use-ccm="true">
+                        <connection-url>jdbc:sqlserver://sqldesarrollo.lantik.bfa\desarrollo:2794;DatabaseName=DBDAVLFT</connection-url>
+                        <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
+                        <driver>sqlserver2005</driver>
+                        <security>
+                            <user-name>USRSQLD1</user-name>
+                            <password>WTHD1247</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </datasource>
+                    <datasource jta="true" jndi-name="java:/sqlserver/DBK9KONFIGURAZIOKUDEAKETA" pool-name="DBK9KONFIGURAZIOKUDEAKETA" enabled="true" use-ccm="true">
+                        <connection-url>jdbc:sqlserver://d1vbddsqlr:1433;DatabaseName=DBK9KONFIGURAZIOKUDEAKETA</connection-url>
+                        <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
+                        <driver>sqlserver2005</driver>
+                        <security>
+                            <user-name>USRSQLD1</user-name>
+                            <password>WTHD1247</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </datasource>
+                    <datasource jta="true" jndi-name="java:/sqlserver/DBDC8IFI" pool-name="DBDC8IFI" enabled="true" use-ccm="true">
+                        <connection-url>jdbc:sqlserver://sqldesarrollo.lantik.bfa\desarrollo:2794;DatabaseName=DBDC8IFI</connection-url>
+                        <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
+                        <driver>sqlserver2005</driver>
+                        <security>
+                            <user-name>USRSQLD1</user-name>
+                            <password>WTHD1247</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </datasource>
+                    <datasource jta="true" jndi-name="java:/sqlserver/BBLN" pool-name="BBLN" enabled="true" use-ccm="true">
+                        <connection-url>jdbc:sqlserver://sqldesarrollo.lantik.bfa\desarrollo:2794;DatabaseName=DBBBLINR</connection-url>
+                        <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
+                        <driver>sqlserver2005</driver>
+                        <security>
+                            <user-name>WUSRWEBD</user-name>
+                            <password>javig</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </datasource>
+                    <datasource jta="true" jndi-name="java:/sqlserver/DBPaginasTest" pool-name="DBPaginasTest" enabled="true" use-ccm="true">
+                        <connection-url>jdbc:sqlserver://sqldesarrollo.lantik.bfa\desarrollo:2794;DatabaseName=DBJR00PaginasTest</connection-url>
+                        <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
+                        <driver>sqlserver2005</driver>
+                        <security>
+                            <user-name>USRSQLD1</user-name>
+                            <password>WTDH1247</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </datasource>
+                    <datasource jta="true" jndi-name="java:/sqlserver/DBUDDATO" pool-name="DBUDDATO" enabled="true" use-ccm="true">
+                        <connection-url>jdbc:sqlserver://sqldesarrollo.lantik.bfa\desarrollo:2794;DatabaseName=DBUDDATO</connection-url>
+                        <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
+                        <driver>sqlserver2005</driver>
+                        <security>
+                            <user-name>WUSRWEBD</user-name>
+                            <password>javig</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </datasource>
+                    <datasource jta="true" jndi-name="java:/sqlserver/DBKPPRCM" pool-name="DBKPPRCM" enabled="true" use-ccm="true">
+                        <connection-url>jdbc:sqlserver://sqldesarrollo.lantik.bfa\desarrollo:2794;DatabaseName=DBKPPRCM</connection-url>
+                        <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
+                        <driver>sqlserver2005</driver>
+                        <security>
+                            <user-name>WUSRWEBD</user-name>
+                            <password>javig</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </datasource>
+                    <datasource jta="true" jndi-name="java:/sqlserver/DBIRCOMU" pool-name="DBIRCOMU" enabled="true" use-ccm="true">
+                        <connection-url>jdbc:sqlserver://sqldesarrollo.lantik.bfa\desarrollo:2794;DatabaseName=DBIRCOMU</connection-url>
+                        <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
+                        <driver>sqlserver2005</driver>
+                        <security>
+                            <user-name>WUSRWEBD</user-name>
+                            <password>javig</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </datasource>
+                    <xa-datasource jndi-name="java:/jdbc/db2/DB2" pool-name="DB2" enabled="true" use-ccm="true">
+                        <xa-datasource-property name="collection">
+                            databasecollection
+                        </xa-datasource-property>
+                        <xa-datasource-property name="databaseName">
+                            DSND
+                        </xa-datasource-property>
+                        <xa-datasource-property name="serverName">
+                            db2server
+                        </xa-datasource-property>
+                        <xa-datasource-property name="portNumber">
+                            446
+                        </xa-datasource-property>
+                        <xa-datasource-class>com.starsql.datasource.SQXADataSource</xa-datasource-class>
+                        <driver>starsql</driver>
+                        <xa-pool>
+                            <min-pool-size>11</min-pool-size>
+                            <max-pool-size>50</max-pool-size>
+                            <is-same-rm-override>false</is-same-rm-override>
+                            <interleaving>false</interleaving>
+                            <pad-xid>false</pad-xid>
+                            <wrap-xa-resource>false</wrap-xa-resource>
+                        </xa-pool>
+                        <security>
+                            <user-name>WUSRWEBD</user-name>
+                            <password>javig</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <timeout>
+                            <idle-timeout-minutes>3</idle-timeout-minutes>
+                        </timeout>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </xa-datasource>
+                    <drivers>
+                        <driver name="starsql" module="com.starsql">
+                            <driver-class>com.starsql.jdbc.SQDriver</driver-class>
+                            <xa-datasource-class>com.starsql.datasource.SQXADataSource</xa-datasource-class>
+                        </driver>
+                        <driver name="sqlserver2005" module="com.sqlserver"/>
+                    </drivers>
+                </datasources>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:ee:1.1">
+                <global-modules>
+                    <module name="com.starsql" slot="main"/>
+                    <module name="com.db2" slot="main"/>
+                    <module name="net.bizkaia.bide.testing.filter" slot="main"/>
+                </global-modules>
+                <spec-descriptor-property-replacement>false</spec-descriptor-property-replacement>
+                <jboss-descriptor-property-replacement>true</jboss-descriptor-property-replacement>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:ejb3:1.4">
+                <session-bean>
+                    <stateless>
+                        <bean-instance-pool-ref pool-name="slsb-strict-max-pool"/>
+                    </stateless>
+                    <stateful default-access-timeout="5000" cache-ref="simple" clustered-cache-ref="clustered"/>
+                    <singleton default-access-timeout="5000"/>
+                </session-bean>
+                <pools>
+                    <bean-instance-pools>
+                        <strict-max-pool name="slsb-strict-max-pool" max-pool-size="20" instance-acquisition-timeout="5" instance-acquisition-timeout-unit="MINUTES"/>
+                        <strict-max-pool name="mdb-strict-max-pool" max-pool-size="20" instance-acquisition-timeout="5" instance-acquisition-timeout-unit="MINUTES"/>
+                    </bean-instance-pools>
+                </pools>
+                <caches>
+                    <cache name="simple" aliases="NoPassivationCache"/>
+                    <cache name="passivating" passivation-store-ref="file" aliases="SimpleStatefulCache"/>
+                    <cache name="clustered" passivation-store-ref="infinispan" aliases="StatefulTreeCache"/>
+                </caches>
+                <passivation-stores>
+                    <file-passivation-store name="file"/>
+                    <cluster-passivation-store name="infinispan" cache-container="ejb"/>
+                </passivation-stores>
+                <async thread-pool-name="default"/>
+                <timer-service thread-pool-name="default">
+                    <data-store path="timer-service-data" relative-to="jboss.server.data.dir"/>
+                </timer-service>
+                <remote connector-ref="remoting-connector" thread-pool-name="default"/>
+                <thread-pools>
+                    <thread-pool name="default">
+                        <max-threads count="10"/>
+                        <keepalive-time time="100" unit="milliseconds"/>
+                    </thread-pool>
+                </thread-pools>
+                <default-security-domain value="other"/>
+                <default-missing-method-permissions-deny-access value="true"/>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:infinispan:1.4">
+                <cache-container name="singleton" aliases="cluster ha-partition" default-cache="default">
+                    <transport lock-timeout="60000"/>
+                    <replicated-cache name="default" mode="SYNC" batching="true">
+                        <locking isolation="REPEATABLE_READ"/>
+                    </replicated-cache>
+                </cache-container>
+                <cache-container name="web" aliases="standard-session-cache" default-cache="repl" module="org.jboss.as.clustering.web.infinispan">
+                    <transport lock-timeout="60000"/>
+                    <replicated-cache name="repl" mode="ASYNC" batching="true">
+                        <file-store/>
+                    </replicated-cache>
+                    <replicated-cache name="sso" mode="SYNC" batching="true"/>
+                    <distributed-cache name="dist" l1-lifespan="0" mode="ASYNC" batching="true">
+                        <file-store/>
+                    </distributed-cache>
+                </cache-container>
+                <cache-container name="ejb" aliases="sfsb sfsb-cache" default-cache="repl" module="org.jboss.as.clustering.ejb3.infinispan">
+                    <transport lock-timeout="60000"/>
+                    <replicated-cache name="repl" mode="ASYNC" batching="true">
+                        <eviction strategy="LRU" max-entries="10000"/>
+                        <file-store/>
+                    </replicated-cache>
+                    <replicated-cache name="remote-connector-client-mappings" mode="SYNC" batching="true"/>
+                    <distributed-cache name="dist" l1-lifespan="0" mode="ASYNC" batching="true">
+                        <eviction strategy="LRU" max-entries="10000"/>
+                        <file-store/>
+                    </distributed-cache>
+                </cache-container>
+                <cache-container name="hibernate" default-cache="local-query" module="org.jboss.as.jpa.hibernate:4">
+                    <transport lock-timeout="60000"/>
+                    <local-cache name="local-query">
+                        <transaction mode="NONE"/>
+                        <eviction strategy="LRU" max-entries="10000"/>
+                        <expiration max-idle="100000"/>
+                    </local-cache>
+                    <invalidation-cache name="entity" mode="SYNC">
+                        <transaction mode="NON_XA"/>
+                        <eviction strategy="LRU" max-entries="10000"/>
+                        <expiration max-idle="100000"/>
+                    </invalidation-cache>
+                    <replicated-cache name="timestamps" mode="ASYNC">
+                        <transaction mode="NONE"/>
+                        <eviction strategy="NONE"/>
+                    </replicated-cache>
+                </cache-container>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:jaxrs:1.0"/>
+            <subsystem xmlns="urn:jboss:domain:jca:1.1">
+                <archive-validation enabled="true" fail-on-error="true" fail-on-warn="false"/>
+                <bean-validation enabled="true"/>
+                <default-workmanager>
+                    <short-running-threads>
+                        <core-threads count="50"/>
+                        <queue-length count="50"/>
+                        <max-threads count="50"/>
+                        <keepalive-time time="10" unit="seconds"/>
+                    </short-running-threads>
+                    <long-running-threads>
+                        <core-threads count="50"/>
+                        <queue-length count="50"/>
+                        <max-threads count="50"/>
+                        <keepalive-time time="10" unit="seconds"/>
+                    </long-running-threads>
+                </default-workmanager>
+                <cached-connection-manager debug="true" error="false"/>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:jdr:1.0"/>
+            <subsystem xmlns="urn:jboss:domain:jgroups:1.1" default-stack="tcp">
+                <stack name="udp">
+                    <transport type="UDP" socket-binding="jgroups-udp"/>
+                    <protocol type="PING"/>
+                    <protocol type="MERGE3"/>
+                    <protocol type="FD_SOCK" socket-binding="jgroups-udp-fd"/>
+                    <protocol type="FD"/>
+                    <protocol type="VERIFY_SUSPECT"/>
+                    <protocol type="pbcast.NAKACK"/>
+                    <protocol type="UNICAST2"/>
+                    <protocol type="pbcast.STABLE"/>
+                    <protocol type="pbcast.GMS"/>
+                    <protocol type="UFC"/>
+                    <protocol type="MFC"/>
+                    <protocol type="FRAG2"/>
+                    <protocol type="RSVP"/>
+                </stack>
+                <stack name="tcp">
+                    <transport type="TCP" socket-binding="jgroups-tcp"/>
+                    <protocol type="TCPPING">
+                        <property name="initial_hosts">
+                            ${tcp_cluster.initial_host}
+                        </property>
+                        <property name="num_initial_members">
+                            2
+                        </property>
+                        <property name="port_range">
+                            0
+                        </property>
+                        <property name="timeout">
+                            2000
+                        </property>
+                    </protocol>
+                    <protocol type="MERGE2"/>
+                    <protocol type="FD_SOCK" socket-binding="jgroups-tcp-fd"/>
+                    <protocol type="FD"/>
+                    <protocol type="VERIFY_SUSPECT"/>
+                    <protocol type="pbcast.NAKACK"/>
+                    <protocol type="UNICAST2"/>
+                    <protocol type="pbcast.STABLE"/>
+                    <protocol type="pbcast.GMS"/>
+                    <protocol type="UFC"/>
+                    <protocol type="MFC"/>
+                    <protocol type="FRAG2"/>
+                    <protocol type="RSVP"/>
+                </stack>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:jmx:1.3">
+                <expose-resolved-model/>
+                <expose-expression-model/>
+                <remoting-connector use-management-endpoint="false"/>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:jpa:1.1">
+                <jpa default-datasource="" default-extended-persistence-inheritance="DEEP"/>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:jsf:1.0"/>
+            <subsystem xmlns="urn:jboss:domain:mail:1.1">
+                <mail-session jndi-name="java:jboss/mail/Default">
+                    <smtp-server outbound-socket-binding-ref="mail-smtp"/>
+                </mail-session>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:modcluster:1.1">
+                <mod-cluster-config advertise-socket="modcluster" proxy-list="${httpd.modcluster}" advertise="false" node-timeout="600" connector="ajp">
+                    <dynamic-load-provider>
+                        <load-metric type="busyness"/>
+                    </dynamic-load-provider>
+                </mod-cluster-config>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:naming:1.4">
+                <remote-naming/>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:pojo:1.0"/>
+            <subsystem xmlns="urn:jboss:domain:remoting:1.1">
+                <connector name="remoting-connector" socket-binding="remoting" security-realm="ApplicationRealm"/>
+                <outbound-connections>
+                    <remote-outbound-connection name="remote-ejb-connection-d1vappjb01-negocio" outbound-socket-binding-ref="remote-ejb-d1vappjb01-negocio" username="ejbclient" security-realm="ejb-security-realm">
+                        <properties>
+                            <property name="SASL_POLICY_NOANONYMOUS" value="false"/>
+                            <property name="SSL_ENABLED" value="false"/>
+                        </properties>
+                    </remote-outbound-connection>
+                    <remote-outbound-connection name="remote-ejb-connection-d1vappjb02-negocio" outbound-socket-binding-ref="remote-ejb-d1vappjb02-negocio" username="ejbclient" security-realm="ejb-security-realm">
+                        <properties>
+                            <property name="SASL_POLICY_NOANONYMOUS" value="false"/>
+                            <property name="SSL_ENABLED" value="false"/>
+                        </properties>
+                    </remote-outbound-connection>
+                </outbound-connections>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:resource-adapters:1.1"/>
+            <subsystem xmlns="urn:jboss:domain:sar:1.0"/>
+            <subsystem xmlns="urn:jboss:domain:security:1.2">
+                <security-domains>
+                    <security-domain name="BIGIP">
+                        <authentication>
+                            <login-module code="net.bizkaia.bide.seguridad.bigIp.headerLoginModule" flag="required"/>
+                        </authentication>
+                    </security-domain>
+                    <security-domain name="other" cache-type="default">
+                        <authentication>
+                            <login-module code="Remoting" flag="optional">
+                                <module-option name="password-stacking" value="useFirstPass"/>
+                            </login-module>
+                            <login-module code="RealmDirect" flag="required">
+                                <module-option name="password-stacking" value="useFirstPass"/>
+                            </login-module>
+                        </authentication>
+                    </security-domain>
+                    <security-domain name="jboss-web-policy" cache-type="default">
+                        <authorization>
+                            <policy-module code="Delegating" flag="required"/>
+                        </authorization>
+                    </security-domain>
+                    <security-domain name="jboss-ejb-policy" cache-type="default">
+                        <authorization>
+                            <policy-module code="Delegating" flag="required"/>
+                        </authorization>
+                    </security-domain>
+                    <security-domain name="TAM">
+                        <authentication>
+                            <login-module code="net.bizkaia.seguridad.login.frontend.login.WebSealLoginModule" flag="required">
+                                <module-option name="idType" value="iv-creds"/>
+                                <module-option name="buildRolesFrom" value="PDPrincipal"/>
+                                <module-option name="reqHdrList" value="iv-user"/>
+                                <module-option name="loginID" value="jboss-sso-user"/>
+                                <module-option name="pdconfig" value="file:///opt/jboss/jboss-eap/domain/configuration/jboss-sso.properties"/>
+                                <module-option name="ssoPwdExpiry" value="1200"/>
+                            </login-module>
+                        </authentication>
+                    </security-domain>
+                    <security-domain name="SecTestWeb" cache-type="default"/>
+                </security-domains>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:threads:1.1"/>
+            <subsystem xmlns="urn:jboss:domain:transactions:1.4">
+                <core-environment>
+                    <process-id>
+                        <uuid/>
+                    </process-id>
+                </core-environment>
+                <recovery-environment socket-binding="txn-recovery-environment" status-socket-binding="txn-status-manager"/>
+                <coordinator-environment default-timeout="300"/>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:web:1.5" default-virtual-server="default-host" instance-id="${jboss.node.name}" native="false">
+                <connector name="http" protocol="HTTP/1.1" scheme="http" socket-binding="http" max-post-size="4194304"/>
+                <connector name="ajp" protocol="AJP/1.3" scheme="http" socket-binding="ajp" max-post-size="4194304"/>
+                <virtual-server name="default-host" enable-welcome-root="false"/>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:webservices:1.2">
+                <modify-wsdl-address>false</modify-wsdl-address>
+                <wsdl-host>desajboss.aldundia.bfa</wsdl-host>
+                <wsdl-port>80</wsdl-port>
+                <endpoint-config name="Standard-Endpoint-Config"/>
+                <endpoint-config name="Recording-Endpoint-Config">
+                    <pre-handler-chain name="recording-handlers" protocol-bindings="##SOAP11_HTTP ##SOAP11_HTTP_MTOM ##SOAP12_HTTP ##SOAP12_HTTP_MTOM">
+                        <handler name="RecordingHandler" class="org.jboss.ws.common.invocation.RecordingServerHandler"/>
+                    </pre-handler-chain>
+                </endpoint-config>
+                <client-config name="Standard-Client-Config"/>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:weld:1.0"/>
+            <subsystem xmlns="urn:net.bizkaia.bide.testing.jbsubsystem:1.0"/>
+        </profile>
+        <profile name="negocio">
+            <subsystem xmlns="urn:jboss:domain:logging:1.3">
+                <size-rotating-file-handler name="FILESIZE" autoflush="true">
+                    <level name="TRACE"/>
+                    <formatter>
+                        <pattern-formatter pattern="%d{dd/MM/yyyy HH:mm:ss,SSS} %-5p [%c] (%t) %s%E%n"/>
+                    </formatter>
+                    <file relative-to="jboss.server.log.dir" path="server.log"/>
+                    <rotate-size value="8m"/>
+                    <max-backup-index value="10"/>
+                    <append value="true"/>
+                </size-rotating-file-handler>
+                <logger category="org.apache.coyote">
+                    <level name="INFO"/>
+                </logger>
+                <logger category="com.arjuna" use-parent-handlers="false">
+                    <level name="ERROR"/>
+                    <handlers>
+                        <handler name="FILESIZE"/>
+                    </handlers>
+                </logger>
+                <logger category="org.apache.tomcat.util.modeler">
+                    <level name="INFO"/>
+                    <handlers>
+                        <handler name="FILESIZE"/>
+                    </handlers>
+                </logger>
+                <logger category="org.jboss.as.config">
+                    <level name="INFO"/>
+                </logger>
+                <logger category="sun.rmi">
+                    <level name="INFO"/>
+                </logger>
+                <logger category="jacorb">
+                    <level name="INFO"/>
+                </logger>
+                <logger category="jacorb.config">
+                    <level name="INFO"/>
+                </logger>
+                <logger category="org.jboss.ejb3" use-parent-handlers="false">
+                    <level name="FINER"/>
+                </logger>
+                <logger category="ch.quos.logback" use-parent-handlers="false">
+                    <level name="TRACE"/>
+                    <handlers>
+                        <handler name="FILESIZE"/>
+                    </handlers>
+                </logger>
+                <logger category="net.bizkaia.sebi" use-parent-handlers="true">
+                    <level name="ALL"/>
+                </logger>
+                <logger category="org.apache.activemq.transport.failover.FailoverTransport" use-parent-handlers="true">
+                    <level name="ERROR"/>
+                </logger>
+                <root-logger>
+                    <level name="INFO"/>
+                    <handlers>
+                        <handler name="FILESIZE"/>
+                    </handlers>
+                </root-logger>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:configadmin:1.0"/>
+            <subsystem xmlns="urn:jboss:domain:datasources:1.1">
+                <datasources>
+                    <datasource jta="true" jndi-name="java:/jdbc/db2/ATOMSTARNOXA" pool-name="ATOMSTARNOXA" enabled="true" use-ccm="true">
+                        <connection-url>jdbc:StarSQL_JDBC://db2server:446/DSND</connection-url>
+                        <driver-class>com.starsql.jdbc.SQDriver</driver-class>
+                        <driver>starsql</driver>
+                        <security>
+                            <user-name>WDWEBUS1</user-name>
+                            <password>1247WTHD</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </datasource>
+                    <datasource jta="true" jndi-name="java:/jdbc/db2/SEGURIDANOXA" pool-name="SEGURIDANOXA" enabled="false" use-ccm="true">
+                        <connection-url>jdbc:StarSQL_JDBC://db2server:446/DSND</connection-url>
+                        <driver-class>com.starsql.jdbc.SQDriver</driver-class>
+                        <driver>starsql</driver>
+                        <security>
+                            <user-name>WDSEW000</user-name>
+                            <password>8BHPUZZ4</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </datasource>
+                    <datasource jta="true" jndi-name="java:/jdbc/db2/SEGURIDANOXA2" pool-name="SEGURIDANOXA2" enabled="true" use-ccm="true">
+                        <connection-url>jdbc:StarSQL_JDBC://db2server:446/DSND</connection-url>
+                        <driver-class>com.starsql.jdbc.SQDriver</driver-class>
+                        <driver>starsql</driver>
+                        <transaction-isolation>TRANSACTION_READ_COMMITTED</transaction-isolation>
+                        <security>
+                            <user-name>WDSEW000</user-name>
+                            <password>8BHPUZZ4</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </datasource>
+                    <datasource jta="true" jndi-name="java:/jdbc/sqlserver/SEGURIDANOXA" pool-name="SQLSERVER_SEGURIDA" enabled="true" use-ccm="true">
+                        <connection-url>jdbc:sqlserver://D1VBDDSQLR:1433;DatabaseName=DBSESEGURIDAD</connection-url>
+                        <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
+                        <driver>sqlserver2005</driver>
+                        <pool>
+                            <min-pool-size>10</min-pool-size>
+                            <max-pool-size>100</max-pool-size>
+                        </pool>
+                        <security>
+                            <user-name>WDSEW000</user-name>
+                            <password>8BHPUZZ4</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </datasource>
+                    <datasource jta="true" jndi-name="java:/jdbc/db2/NM00BIDENOXA" pool-name="NM000BIDENOXA" enabled="true" use-ccm="true">
+                        <connection-url>jdbc:StarSQL_JDBC://db2server:446/DSND</connection-url>
+                        <driver-class>com.starsql.jdbc.SQDriver</driver-class>
+                        <driver>starsql</driver>
+                        <security>
+                            <user-name>WUSERDB</user-name>
+                            <password>javig</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </datasource>
+                    <datasource jta="true" jndi-name="java:/jdbc/sqlserver/EO00BIDE" pool-name="EO00BIDE_SQLSERVER_NOXA" enabled="true" use-ccm="true">
+                        <connection-url>jdbc:sqlserver://D1VBDDSQLR.bizkaiko.aldundia:1433;databaseName=DBEOESCRITORIO</connection-url>
+                        <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
+                        <driver>sqlserver2005</driver>
+                        <security>
+                            <user-name>WDEOW000</user-name>
+                            <password>desarrollo</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </datasource>
+                    <datasource jta="true" jndi-name="java:/jdbc/sqlserver/N800BIDE" pool-name="N800BIDE" enabled="true" use-ccm="true">
+                        <connection-url>jdbc:sqlserver://D1VBDDSQLR.bizkaiko.aldundia:1433;DatabaseName=DBN8GESTORPROC</connection-url>
+                        <driver-class>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver-class>
+                        <driver>sqlserver2005</driver>
+                        <security>
+                            <user-name>WDN8W000</user-name>
+                            <password>wdn8w000_</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </datasource>
+                    <xa-datasource jndi-name="java:/jdbc/db2/DB2" pool-name="DB2" enabled="true" use-ccm="true">
+                        <xa-datasource-property name="collection">
+                            databasecollection
+                        </xa-datasource-property>
+                        <xa-datasource-property name="databaseName">
+                            DSND
+                        </xa-datasource-property>
+                        <xa-datasource-property name="portNumber">
+                            446
+                        </xa-datasource-property>
+                        <xa-datasource-property name="serverName">
+                            db2server
+                        </xa-datasource-property>
+                        <xa-datasource-class>com.starsql.datasource.SQXADataSource</xa-datasource-class>
+                        <driver>starsql</driver>
+                        <xa-pool>
+                            <is-same-rm-override>false</is-same-rm-override>
+                            <interleaving>false</interleaving>
+                            <pad-xid>false</pad-xid>
+                            <wrap-xa-resource>false</wrap-xa-resource>
+                        </xa-pool>
+                        <security>
+                            <user-name>WUSRWEBD</user-name>
+                            <password>javig</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </xa-datasource>
+                    <xa-datasource jndi-name="java:/jdbc/db2/EW00BIDE" pool-name="EW00BIDE" enabled="true" use-ccm="true">
+                        <xa-datasource-property name="databaseName">
+                            DSND
+                        </xa-datasource-property>
+                        <xa-datasource-property name="portNumber">
+                            446
+                        </xa-datasource-property>
+                        <xa-datasource-property name="serverName">
+                            db2server
+                        </xa-datasource-property>
+                        <xa-datasource-property name="collection">
+                            databasecollection
+                        </xa-datasource-property>
+                        <xa-datasource-class>com.starsql.datasource.SQXADataSource</xa-datasource-class>
+                        <driver>starsql</driver>
+                        <xa-pool>
+                            <min-pool-size>5</min-pool-size>
+                            <max-pool-size>25</max-pool-size>
+                            <is-same-rm-override>false</is-same-rm-override>
+                            <interleaving>false</interleaving>
+                            <pad-xid>false</pad-xid>
+                            <wrap-xa-resource>false</wrap-xa-resource>
+                        </xa-pool>
+                        <security>
+                            <user-name>WUSRWEBD</user-name>
+                            <password>JAVIG</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </xa-datasource>
+                    <xa-datasource jndi-name="java:/jdbc/db2/N300BIDE" pool-name="N300BIDE" enabled="true" use-ccm="true">
+                        <xa-datasource-property name="DatabaseName">
+                            DSND
+                        </xa-datasource-property>
+                        <xa-datasource-property name="DriverType">
+                            4
+                        </xa-datasource-property>
+                        <xa-datasource-property name="PortNumber">
+                            446
+                        </xa-datasource-property>
+                        <xa-datasource-property name="ServerName">
+                            db2server
+                        </xa-datasource-property>
+                        <xa-datasource-property name="collection">
+                            databasecollection
+                        </xa-datasource-property>
+                        <xa-datasource-class>com.starsql.datasource.SQXADataSource</xa-datasource-class>
+                        <driver>starsql</driver>
+                        <xa-pool>
+                            <is-same-rm-override>false</is-same-rm-override>
+                            <interleaving>false</interleaving>
+                            <pad-xid>false</pad-xid>
+                            <wrap-xa-resource>false</wrap-xa-resource>
+                        </xa-pool>
+                        <security>
+                            <user-name>WUSRWEBD</user-name>
+                            <password>JAVIG</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </xa-datasource>
+                    <xa-datasource jndi-name="java:/jdbc/db2/EO00ZK00" pool-name="EO00ZK00" enabled="false" use-ccm="true">
+                        <xa-datasource-property name="DriverType">
+                            4
+                        </xa-datasource-property>
+                        <xa-datasource-property name="databaseName">
+                            DSND
+                        </xa-datasource-property>
+                        <xa-datasource-property name="portNumber">
+                            446
+                        </xa-datasource-property>
+                        <xa-datasource-property name="serverName">
+                            db2server
+                        </xa-datasource-property>
+                        <xa-datasource-class>com.ibm.db2.jcc.DB2XADataSource</xa-datasource-class>
+                        <driver>db2jcc</driver>
+                        <xa-pool>
+                            <is-same-rm-override>false</is-same-rm-override>
+                            <interleaving>false</interleaving>
+                            <pad-xid>false</pad-xid>
+                            <wrap-xa-resource>false</wrap-xa-resource>
+                        </xa-pool>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </xa-datasource>
+                    <xa-datasource jndi-name="java:/jdbc/db2/EO00BIDE" pool-name="EO00BIDE" enabled="true" use-ccm="true">
+                        <xa-datasource-property name="databaseName">
+                            DSND
+                        </xa-datasource-property>
+                        <xa-datasource-property name="portNumber">
+                            446
+                        </xa-datasource-property>
+                        <xa-datasource-property name="serverName">
+                            db2server
+                        </xa-datasource-property>
+                        <xa-datasource-property name="collection">
+                            databasecollection
+                        </xa-datasource-property>
+                        <xa-datasource-class>com.starsql.datasource.SQXADataSource</xa-datasource-class>
+                        <driver>starsql</driver>
+                        <xa-pool>
+                            <min-pool-size>5</min-pool-size>
+                            <max-pool-size>25</max-pool-size>
+                            <is-same-rm-override>false</is-same-rm-override>
+                            <interleaving>false</interleaving>
+                            <pad-xid>false</pad-xid>
+                            <wrap-xa-resource>false</wrap-xa-resource>
+                        </xa-pool>
+                        <security>
+                            <user-name>WUSRWEBD</user-name>
+                            <password>JAVIG</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </xa-datasource>
+                    <xa-datasource jndi-name="java:/jdbc/db2/UT00BIDE" pool-name="UT00BIDE" enabled="true" use-ccm="true">
+                        <xa-datasource-property name="databaseName">
+                            DSND
+                        </xa-datasource-property>
+                        <xa-datasource-property name="collection">
+                            databasecollection
+                        </xa-datasource-property>
+                        <xa-datasource-property name="portNumber">
+                            446
+                        </xa-datasource-property>
+                        <xa-datasource-property name="serverName">
+                            db2server
+                        </xa-datasource-property>
+                        <xa-datasource-class>com.starsql.datasource.SQXADataSource</xa-datasource-class>
+                        <driver>starsql</driver>
+                        <xa-pool>
+                            <is-same-rm-override>false</is-same-rm-override>
+                            <interleaving>false</interleaving>
+                            <pad-xid>false</pad-xid>
+                            <wrap-xa-resource>false</wrap-xa-resource>
+                        </xa-pool>
+                        <security>
+                            <user-name>WUSRWEBD</user-name>
+                            <password>JAVIG</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </xa-datasource>
+                    <xa-datasource jndi-name="java:/jdbc/db2/N900BIDE" pool-name="N900BIDE" enabled="true" use-ccm="true">
+                        <xa-datasource-property name="databaseName">
+                            DSND
+                        </xa-datasource-property>
+                        <xa-datasource-property name="collection">
+                            databasecollection
+                        </xa-datasource-property>
+                        <xa-datasource-property name="portNumber">
+                            446
+                        </xa-datasource-property>
+                        <xa-datasource-property name="serverName">
+                            db2server
+                        </xa-datasource-property>
+                        <xa-datasource-class>com.starsql.datasource.SQXADataSource</xa-datasource-class>
+                        <driver>starsql</driver>
+                        <xa-pool>
+                            <is-same-rm-override>false</is-same-rm-override>
+                            <interleaving>false</interleaving>
+                            <pad-xid>false</pad-xid>
+                            <wrap-xa-resource>false</wrap-xa-resource>
+                        </xa-pool>
+                        <security>
+                            <user-name>WUSRWEBD</user-name>
+                            <password>JAVIG</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </xa-datasource>
+                    <xa-datasource jndi-name="java:/jdbc/db2/N500BIDE" pool-name="N500BIDE" enabled="true" use-ccm="true">
+                        <xa-datasource-property name="databaseName">
+                            DSND
+                        </xa-datasource-property>
+                        <xa-datasource-property name="collection">
+                            databasecollection
+                        </xa-datasource-property>
+                        <xa-datasource-property name="portNumber">
+                            446
+                        </xa-datasource-property>
+                        <xa-datasource-property name="serverName">
+                            db2server
+                        </xa-datasource-property>
+                        <xa-datasource-class>com.starsql.datasource.SQXADataSource</xa-datasource-class>
+                        <driver>starsql</driver>
+                        <xa-pool>
+                            <is-same-rm-override>false</is-same-rm-override>
+                            <interleaving>false</interleaving>
+                            <pad-xid>false</pad-xid>
+                            <wrap-xa-resource>false</wrap-xa-resource>
+                        </xa-pool>
+                        <security>
+                            <user-name>WUSRWEBD</user-name>
+                            <password>JAVIG</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </xa-datasource>
+                    <xa-datasource jndi-name="java:/jdbc/db2/SEGURIDA" pool-name="SEGURIDA" enabled="true" use-ccm="true">
+                        <xa-datasource-property name="collection">
+                            databasecollection
+                        </xa-datasource-property>
+                        <xa-datasource-property name="databaseName">
+                            DSND
+                        </xa-datasource-property>
+                        <xa-datasource-property name="portNumber">
+                            446
+                        </xa-datasource-property>
+                        <xa-datasource-property name="serverName">
+                            db2server
+                        </xa-datasource-property>
+                        <xa-datasource-class>com.starsql.datasource.SQXADataSource</xa-datasource-class>
+                        <driver>starsql</driver>
+                        <xa-pool>
+                            <min-pool-size>10</min-pool-size>
+                            <max-pool-size>20</max-pool-size>
+                            <prefill>true</prefill>
+                            <is-same-rm-override>false</is-same-rm-override>
+                            <interleaving>false</interleaving>
+                            <pad-xid>false</pad-xid>
+                            <wrap-xa-resource>false</wrap-xa-resource>
+                        </xa-pool>
+                        <security>
+                            <user-name>WDSEW000</user-name>
+                            <password>8BHPUZZ4</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </xa-datasource>
+                    <xa-datasource jndi-name="java:/jdbc/sqlserver/N300BIDE" pool-name="N300BIDE2" enabled="true" use-ccm="true">
+                        <xa-datasource-property name="ServerName">
+                            D1VBDDSQLR
+                        </xa-datasource-property>
+                        <xa-datasource-property name="DatabaseName">
+                            DBN3ENTRADA
+                        </xa-datasource-property>
+                        <xa-datasource-property name="SelectMethod">
+                            cursor
+                        </xa-datasource-property>
+                        <xa-datasource-property name="PortNumber">
+                            1433
+                        </xa-datasource-property>
+                        <xa-datasource-class>com.microsoft.sqlserver.jdbc.SQLServerXADataSource</xa-datasource-class>
+                        <driver>sqlserver2005</driver>
+                        <xa-pool>
+                            <is-same-rm-override>false</is-same-rm-override>
+                            <interleaving>false</interleaving>
+                            <pad-xid>false</pad-xid>
+                            <wrap-xa-resource>false</wrap-xa-resource>
+                        </xa-pool>
+                        <security>
+                            <user-name>USRN3ENTRADA</user-name>
+                            <password>L5cdposlm</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </xa-datasource>
+                    <xa-datasource jndi-name="java:/jdbc/sqlserver/NM00BIDE" pool-name="NM00BIDE" enabled="true" use-ccm="true">
+                        <xa-datasource-property name="DatabaseName">
+                            DBEJEJEMPLOFRAMEWORK
+                        </xa-datasource-property>
+                        <xa-datasource-property name="PortNumber">
+                            1433
+                        </xa-datasource-property>
+                        <xa-datasource-property name="SelectMethod">
+                            cursor
+                        </xa-datasource-property>
+                        <xa-datasource-property name="ServerName">
+                            D1VBDDSQLR
+                        </xa-datasource-property>
+                        <xa-datasource-class>com.microsoft.sqlserver.jdbc.SQLServerXADataSource</xa-datasource-class>
+                        <driver>sqlserver2005</driver>
+                        <xa-pool>
+                            <is-same-rm-override>false</is-same-rm-override>
+                            <interleaving>false</interleaving>
+                            <pad-xid>false</pad-xid>
+                            <wrap-xa-resource>false</wrap-xa-resource>
+                        </xa-pool>
+                        <security>
+                            <user-name>WDN0W000</user-name>
+                            <password>JAVIG</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </xa-datasource>
+                    <xa-datasource jndi-name="java:/jdbc/sqlserver/JR00BIDE" pool-name="JR00BIDE" enabled="true" use-ccm="true">
+                        <xa-datasource-property name="DatabaseName">
+                            DBEJEJEMPLOFRAMEWORK
+                        </xa-datasource-property>
+                        <xa-datasource-property name="PortNumber">
+                            1433
+                        </xa-datasource-property>
+                        <xa-datasource-property name="SelectMethod">
+                            cursor
+                        </xa-datasource-property>
+                        <xa-datasource-property name="ServerName">
+                            D1VBDDSQLR
+                        </xa-datasource-property>
+                        <xa-datasource-class>com.microsoft.sqlserver.jdbc.SQLServerXADataSource</xa-datasource-class>
+                        <driver>sqlserver2005</driver>
+                        <xa-pool>
+                            <is-same-rm-override>false</is-same-rm-override>
+                            <interleaving>false</interleaving>
+                            <pad-xid>false</pad-xid>
+                            <wrap-xa-resource>false</wrap-xa-resource>
+                        </xa-pool>
+                        <security>
+                            <user-name>WDN0W000</user-name>
+                            <password>JAVIG</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </xa-datasource>
+                    <xa-datasource jndi-name="java:/jdbc/db2/N000BIDE" pool-name="N000BIDE" enabled="true" use-ccm="true">
+                        <xa-datasource-property name="serverName">
+                            db2server
+                        </xa-datasource-property>
+                        <xa-datasource-property name="portNumber">
+                            446
+                        </xa-datasource-property>
+                        <xa-datasource-property name="collection">
+                            databasecollection
+                        </xa-datasource-property>
+                        <xa-datasource-property name="databaseName">
+                            DSND
+                        </xa-datasource-property>
+                        <xa-datasource-class>com.starsql.datasource.SQXADataSource</xa-datasource-class>
+                        <driver>starsql</driver>
+                        <xa-pool>
+                            <is-same-rm-override>false</is-same-rm-override>
+                            <interleaving>false</interleaving>
+                            <pad-xid>false</pad-xid>
+                            <wrap-xa-resource>false</wrap-xa-resource>
+                        </xa-pool>
+                        <security>
+                            <user-name>WUSRWEBD</user-name>
+                            <password>JAVIG</password>
+                        </security>
+                        <validation>
+                            <validate-on-match>false</validate-on-match>
+                            <background-validation>false</background-validation>
+                        </validation>
+                        <statement>
+                            <share-prepared-statements>false</share-prepared-statements>
+                        </statement>
+                    </xa-datasource>
+                    <drivers>
+                        <driver name="starsql" module="com.starsql">
+                            <driver-class>com.starsql.jdbc.SQDriver</driver-class>
+                            <xa-datasource-class>com.starsql.datasource.SQXADataSource</xa-datasource-class>
+                        </driver>
+                        <driver name="trustedDB2" module="com.db2">
+                            <xa-datasource-class>com.ibm.db2.jcc.TrustedDB2XADataSource</xa-datasource-class>
+                        </driver>
+                        <driver name="sqlserver2005" module="com.sqlserver"/>
+                        <driver name="postgresql" module="com.postgre"/>
+                    </drivers>
+                </datasources>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:ee:1.1">
+                <global-modules>
+                    <module name="com.starsql" slot="main"/>
+                    <module name="com.db2" slot="main"/>
+                </global-modules>
+                <spec-descriptor-property-replacement>false</spec-descriptor-property-replacement>
+                <jboss-descriptor-property-replacement>true</jboss-descriptor-property-replacement>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:ejb3:1.4">
+                <session-bean>
+                    <stateless>
+                        <bean-instance-pool-ref pool-name="slsb-strict-max-pool"/>
+                    </stateless>
+                    <stateful default-access-timeout="5000" cache-ref="simple" clustered-cache-ref="clustered"/>
+                    <singleton default-access-timeout="5000"/>
+                </session-bean>
+                <mdb>
+                    <resource-adapter-ref resource-adapter-name="${ejb.resource-adapter-name:hornetq-ra}"/>
+                    <bean-instance-pool-ref pool-name="mdb-strict-max-pool"/>
+                </mdb>
+                <pools>
+                    <bean-instance-pools>
+                        <strict-max-pool name="slsb-strict-max-pool" max-pool-size="200" instance-acquisition-timeout="5" instance-acquisition-timeout-unit="MINUTES"/>
+                        <strict-max-pool name="mdb-strict-max-pool" max-pool-size="20" instance-acquisition-timeout="5" instance-acquisition-timeout-unit="MINUTES"/>
+                    </bean-instance-pools>
+                </pools>
+                <caches>
+                    <cache name="simple" aliases="NoPassivationCache"/>
+                    <cache name="passivating" passivation-store-ref="file" aliases="SimpleStatefulCache"/>
+                    <cache name="clustered" passivation-store-ref="infinispan" aliases="StatefulTreeCache"/>
+                </caches>
+                <passivation-stores>
+                    <file-passivation-store name="file"/>
+                    <cluster-passivation-store name="infinispan" cache-container="ejb"/>
+                </passivation-stores>
+                <async thread-pool-name="default"/>
+                <timer-service thread-pool-name="default">
+                    <data-store path="timer-service-data" relative-to="jboss.server.data.dir"/>
+                </timer-service>
+                <remote connector-ref="remoting-connector" thread-pool-name="default"/>
+                <thread-pools>
+                    <thread-pool name="default">
+                        <max-threads count="100"/>
+                        <keepalive-time time="100" unit="milliseconds"/>
+                    </thread-pool>
+                </thread-pools>
+                <default-security-domain value="other"/>
+                <default-missing-method-permissions-deny-access value="true"/>
+                <statistics enabled="true"/>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:infinispan:1.4">
+                <cache-container name="singleton" aliases="cluster ha-partition" default-cache="default">
+                    <transport lock-timeout="60000"/>
+                    <replicated-cache name="default" mode="SYNC" batching="true">
+                        <locking isolation="REPEATABLE_READ"/>
+                    </replicated-cache>
+                </cache-container>
+                <cache-container name="web" aliases="standard-session-cache" default-cache="repl" module="org.jboss.as.clustering.web.infinispan">
+                    <transport lock-timeout="60000"/>
+                    <replicated-cache name="repl" mode="ASYNC" batching="true">
+                        <file-store/>
+                    </replicated-cache>
+                    <replicated-cache name="sso" mode="SYNC" batching="true"/>
+                    <distributed-cache name="dist" l1-lifespan="0" mode="ASYNC" batching="true">
+                        <file-store/>
+                    </distributed-cache>
+                </cache-container>
+                <cache-container name="ejb" aliases="sfsb sfsb-cache" default-cache="repl" module="org.jboss.as.clustering.ejb3.infinispan">
+                    <transport lock-timeout="60000"/>
+                    <replicated-cache name="repl" mode="ASYNC" batching="true">
+                        <eviction strategy="LRU" max-entries="10000"/>
+                        <file-store/>
+                    </replicated-cache>
+                    <replicated-cache name="remote-connector-client-mappings" mode="SYNC" batching="true"/>
+                    <distributed-cache name="dist" l1-lifespan="0" mode="ASYNC" batching="true">
+                        <eviction strategy="LRU" max-entries="10000"/>
+                        <file-store/>
+                    </distributed-cache>
+                </cache-container>
+                <cache-container name="hibernate" default-cache="local-query" module="org.jboss.as.jpa.hibernate:4">
+                    <transport lock-timeout="60000"/>
+                    <local-cache name="local-query">
+                        <transaction mode="NONE"/>
+                        <eviction strategy="LRU" max-entries="10000"/>
+                        <expiration max-idle="100000"/>
+                    </local-cache>
+                    <invalidation-cache name="entity" mode="SYNC">
+                        <transaction mode="NON_XA"/>
+                        <eviction strategy="LRU" max-entries="10000"/>
+                        <expiration max-idle="100000"/>
+                    </invalidation-cache>
+                    <replicated-cache name="timestamps" mode="ASYNC">
+                        <transaction mode="NONE"/>
+                        <eviction strategy="NONE"/>
+                    </replicated-cache>
+                </cache-container>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:jaxrs:1.0"/>
+            <subsystem xmlns="urn:jboss:domain:jca:1.1">
+                <archive-validation enabled="true" fail-on-error="true" fail-on-warn="false"/>
+                <bean-validation enabled="true"/>
+                <default-workmanager>
+                    <short-running-threads>
+                        <core-threads count="50"/>
+                        <queue-length count="50"/>
+                        <max-threads count="50"/>
+                        <keepalive-time time="10" unit="seconds"/>
+                    </short-running-threads>
+                    <long-running-threads>
+                        <core-threads count="50"/>
+                        <queue-length count="50"/>
+                        <max-threads count="50"/>
+                        <keepalive-time time="10" unit="seconds"/>
+                    </long-running-threads>
+                </default-workmanager>
+                <cached-connection-manager debug="true" error="false"/>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:jdr:1.0"/>
+            <subsystem xmlns="urn:jboss:domain:jgroups:1.1" default-stack="tcp">
+                <stack name="udp">
+                    <transport type="UDP" socket-binding="jgroups-udp"/>
+                    <protocol type="PING"/>
+                    <protocol type="MERGE3"/>
+                    <protocol type="FD_SOCK" socket-binding="jgroups-udp-fd"/>
+                    <protocol type="FD"/>
+                    <protocol type="VERIFY_SUSPECT"/>
+                    <protocol type="pbcast.NAKACK"/>
+                    <protocol type="UNICAST2"/>
+                    <protocol type="pbcast.STABLE"/>
+                    <protocol type="pbcast.GMS"/>
+                    <protocol type="UFC"/>
+                    <protocol type="MFC"/>
+                    <protocol type="FRAG2"/>
+                    <protocol type="RSVP"/>
+                </stack>
+                <stack name="tcp">
+                    <transport type="TCP" socket-binding="jgroups-tcp"/>
+                    <protocol type="TCPPING">
+                        <property name="initial_hosts">
+                            ${tcp_cluster.initial_host}
+                        </property>
+                        <property name="num_initial_members">
+                            2
+                        </property>
+                        <property name="port_range">
+                            0
+                        </property>
+                        <property name="timeout">
+                            2000
+                        </property>
+                    </protocol>
+                    <protocol type="MERGE2"/>
+                    <protocol type="FD_SOCK" socket-binding="jgroups-tcp-fd"/>
+                    <protocol type="FD"/>
+                    <protocol type="VERIFY_SUSPECT"/>
+                    <protocol type="pbcast.NAKACK"/>
+                    <protocol type="UNICAST2"/>
+                    <protocol type="pbcast.STABLE"/>
+                    <protocol type="pbcast.GMS"/>
+                    <protocol type="UFC"/>
+                    <protocol type="MFC"/>
+                    <protocol type="FRAG2"/>
+                    <protocol type="RSVP"/>
+                </stack>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:jmx:1.3">
+                <expose-resolved-model/>
+                <expose-expression-model/>
+                <remoting-connector use-management-endpoint="false"/>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:jpa:1.1">
+                <jpa default-datasource="" default-extended-persistence-inheritance="DEEP"/>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:jsf:1.0"/>
+            <subsystem xmlns="urn:jboss:domain:mail:1.1">
+                <mail-session jndi-name="java:jboss/mail/Default">
+                    <smtp-server outbound-socket-binding-ref="mail-smtp"/>
+                </mail-session>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:modcluster:1.1">
+                <mod-cluster-config advertise-socket="modcluster" proxy-list="${httpd.modcluster}" advertise="false" connector="ajp">
+                    <dynamic-load-provider>
+                        <load-metric type="busyness"/>
+                    </dynamic-load-provider>
+                </mod-cluster-config>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:naming:1.4">
+                <remote-naming/>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:pojo:1.0"/>
+            <subsystem xmlns="urn:jboss:domain:remoting:1.1">
+                <connector name="remoting-connector" socket-binding="remoting" security-realm="ApplicationRealm"/>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:resource-adapters:1.1">
+                <resource-adapters>
+                    <resource-adapter id="activemq-rar.rar">
+                        <archive>
+                            activemq-rar.rar
+                        </archive>
+                        <transaction-support>XATransaction</transaction-support>
+                        <config-property name="Password">
+                            password1!
+                        </config-property>
+                        <config-property name="UserName">
+                            admin
+                        </config-property>
+                        <config-property name="ServerUrl">
+                            failover:(tcp://D1VAPPFSW.bizkaiko.aldundia:50000)?jms.rmIdFromConnectionId=true&amp;maxReconnectAttempts=10
+                        </config-property>
+                        <connection-definitions>
+                            <connection-definition class-name="org.apache.activemq.ra.ActiveMQManagedConnectionFactory" jndi-name="java:/RemoteJmsXA" enabled="true" pool-name="ConnectionFactory">
+                                <xa-pool>
+                                    <min-pool-size>10</min-pool-size>
+                                    <max-pool-size>100</max-pool-size>
+                                    <prefill>false</prefill>
+                                    <is-same-rm-override>false</is-same-rm-override>
+                                </xa-pool>
+                                <recovery>
+                                    <recover-credential>
+                                        <user-name>admin</user-name>
+                                        <password>password1!</password>
+                                    </recover-credential>
+                                    <recover-plugin class-name="org.jboss.jca.core.recovery.ConfigurableRecoveryPlugin">
+                                        <config-property name="enableIsValid">
+                                            false
+                                        </config-property>
+                                        <config-property name="isValidOverride">
+                                            true
+                                        </config-property>
+                                    </recover-plugin>
+                                </recovery>
+                            </connection-definition>
+                        </connection-definitions>
+                        <admin-objects>
+                            <admin-object class-name="org.apache.activemq.command.ActiveMQQueue" jndi-name="java:/jms/cola/P11recepcionMDB" pool-name="P11recepcionMDB">
+                                <config-property name="PhysicalName">
+                                    P11recepcionMDB
+                                </config-property>
+                            </admin-object>
+                        </admin-objects>
+                    </resource-adapter>
+                </resource-adapters>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:sar:1.0"/>
+            <subsystem xmlns="urn:jboss:domain:security:1.2">
+                <security-domains>
+                    <security-domain name="other" cache-type="default">
+                        <authentication>
+                            <login-module code="Remoting" flag="optional">
+                                <module-option name="password-stacking" value="useFirstPass"/>
+                            </login-module>
+                            <login-module code="RealmDirect" flag="required">
+                                <module-option name="password-stacking" value="useFirstPass"/>
+                            </login-module>
+                        </authentication>
+                    </security-domain>
+                    <security-domain name="jboss-web-policy" cache-type="default">
+                        <authorization>
+                            <policy-module code="Delegating" flag="required"/>
+                        </authorization>
+                    </security-domain>
+                    <security-domain name="jboss-ejb-policy" cache-type="default">
+                        <authorization>
+                            <policy-module code="Delegating" flag="required"/>
+                        </authorization>
+                    </security-domain>
+                    <security-domain name="rmiInbound">
+                        <authentication>
+                            <login-module code="net.bizkaia.sebi.BusinessLoginModule" flag="required">
+                                <module-option name="password-stacking" value="useFirstPass"/>
+                            </login-module>
+                            <login-module code="Remoting" flag="optional">
+                                <module-option name="password-stacking" value="useFirstPass"/>
+                            </login-module>
+                        </authentication>
+                    </security-domain>
+                    <security-domain name="SecTestWeb" cache-type="default"/>
+                </security-domains>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:threads:1.1"/>
+            <subsystem xmlns="urn:jboss:domain:transactions:1.4">
+                <core-environment>
+                    <process-id>
+                        <uuid/>
+                    </process-id>
+                </core-environment>
+                <recovery-environment socket-binding="txn-recovery-environment" status-socket-binding="txn-status-manager"/>
+                <coordinator-environment default-timeout="300"/>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:web:1.5" default-virtual-server="default-host" instance-id="${jboss.node.name}" native="false">
+                <connector name="http" protocol="HTTP/1.1" scheme="http" socket-binding="http"/>
+                <connector name="ajp" protocol="AJP/1.3" scheme="http" socket-binding="ajp"/>
+                <virtual-server name="default-host" enable-welcome-root="false"/>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:webservices:1.2">
+                <modify-wsdl-address>true</modify-wsdl-address>
+                <wsdl-host>${jboss.bind.address:127.0.0.1}</wsdl-host>
+                <endpoint-config name="Standard-Endpoint-Config"/>
+                <endpoint-config name="Recording-Endpoint-Config">
+                    <pre-handler-chain name="recording-handlers" protocol-bindings="##SOAP11_HTTP ##SOAP11_HTTP_MTOM ##SOAP12_HTTP ##SOAP12_HTTP_MTOM">
+                        <handler name="RecordingHandler" class="org.jboss.ws.common.invocation.RecordingServerHandler"/>
+                    </pre-handler-chain>
+                </endpoint-config>
+                <client-config name="Standard-Client-Config"/>
+            </subsystem>
+            <subsystem xmlns="urn:jboss:domain:weld:1.0"/>
+        </profile>
+    </profiles>
+
+    <interfaces>
+        <interface name="management"/>
+        <interface name="public"/>
+        <interface name="unsecure"/>
+    </interfaces>
+
+    <socket-binding-groups>
+        <socket-binding-group name="presentacion-sockets" default-interface="public">
+            <socket-binding name="ajp" port="8009"/>
+            <socket-binding name="http" port="8080"/>
+            <socket-binding name="https" port="8443"/>
+            <socket-binding name="jgroups-mping" port="0" multicast-address="${jboss.default.multicast.address:230.0.0.4}" multicast-port="45700"/>
+            <socket-binding name="jgroups-tcp" port="7600"/>
+            <socket-binding name="jgroups-tcp-fd" port="57600"/>
+            <socket-binding name="jgroups-udp" port="55200" multicast-address="${jboss.default.multicast.address:230.0.0.4}" multicast-port="45688"/>
+            <socket-binding name="jgroups-udp-fd" port="54200"/>
+            <socket-binding name="modcluster" port="0" multicast-address="224.0.1.105" multicast-port="23364"/>
+            <socket-binding name="remoting" port="4447"/>
+            <socket-binding name="txn-recovery-environment" port="4712"/>
+            <socket-binding name="txn-status-manager" port="4713"/>
+            <outbound-socket-binding name="mail-smtp">
+                <remote-destination host="localhost" port="25"/>
+            </outbound-socket-binding>
+            <outbound-socket-binding name="remote-ejb-d1vappjb01-negocio">
+                <remote-destination host="d1vappjb01" port="5147"/>
+            </outbound-socket-binding>
+            <outbound-socket-binding name="remote-ejb-d1vappjb02-negocio">
+                <remote-destination host="d1vappjb02" port="5147"/>
+            </outbound-socket-binding>
+        </socket-binding-group>
+        <socket-binding-group name="ha-sockets" default-interface="public">
+            <socket-binding name="ajp" port="8009"/>
+            <socket-binding name="http" port="8080"/>
+            <socket-binding name="https" port="8443"/>
+            <socket-binding name="jgroups-mping" port="0" multicast-address="${jboss.default.multicast.address:230.0.0.4}" multicast-port="45700"/>
+            <socket-binding name="jgroups-tcp" port="7600"/>
+            <socket-binding name="jgroups-tcp-fd" port="57600"/>
+            <socket-binding name="jgroups-udp" port="55200" multicast-address="${jboss.default.multicast.address:230.0.0.4}" multicast-port="45688"/>
+            <socket-binding name="jgroups-udp-fd" port="54200"/>
+            <socket-binding name="modcluster" port="0" multicast-address="224.0.1.105" multicast-port="23364"/>
+            <socket-binding name="remoting" port="4447"/>
+            <socket-binding name="txn-recovery-environment" port="4712"/>
+            <socket-binding name="txn-status-manager" port="4713"/>
+            <outbound-socket-binding name="mail-smtp">
+                <remote-destination host="localhost" port="25"/>
+            </outbound-socket-binding>
+            <outbound-socket-binding name="nodo1-mensajeria">
+                <remote-destination host="d1vappjb01" port="6245"/>
+            </outbound-socket-binding>
+            <outbound-socket-binding name="nodo2-mensajeria">
+                <remote-destination host="d1vappjb02" port="6245"/>
+            </outbound-socket-binding>
+        </socket-binding-group>
+    </socket-binding-groups>
+
+    <deployments>
+        <deployment name="DSTester.war" runtime-name="DSTester.war">
+            <content sha1="df8813ed7f3b1ba032c4b491205e634cc54f7796"/>
+        </deployment>
+        <deployment name="FileUpload.war" runtime-name="FileUpload.war">
+            <content sha1="593b6839bd4be8a49d6af6c78ea22972925bc89f"/>
+        </deployment>
+        <deployment name="jspHello.war" runtime-name="jspHello.war">
+            <content sha1="008349b7439c1bb190b4278bf2a44010341200ab"/>
+        </deployment>
+        <deployment name="testP23Des.ear" runtime-name="testP23Des.ear">
+            <content sha1="8b17278d670390fb8c0e6221968010c707b9cf52"/>
+        </deployment>
+        <deployment name="N0RC000C.ear" runtime-name="N0RC000C.ear">
+            <content sha1="b7b4df96979867f269ba3fa47b7889e2366dcc43"/>
+        </deployment>
+        <deployment name="FK00.ear" runtime-name="FK00.ear">
+            <content sha1="49b594e1019297572c21d524ccd4689d226da68e"/>
+        </deployment>
+        <deployment name="LogbackTestEAR.ear" runtime-name="LogbackTestEAR.ear">
+            <content sha1="536002755364dfb2d0b4bd8e4268342c2eda4ca2"/>
+        </deployment>
+        <deployment name="JMSTest.war" runtime-name="JMSTest.war">
+            <content sha1="080292547fa171f540cd26757645095da2d37717"/>
+        </deployment>
+        <deployment name="P23PruebaIntegradaWindowsEAR.ear" runtime-name="P23PruebaIntegradaWindowsEAR.ear">
+            <content sha1="0dc8805aeac342a3475842504bb400c7110563a5"/>
+        </deployment>
+        <deployment name="P23PruebaIntegradaWindowsEJBEAR.ear" runtime-name="P23PruebaIntegradaWindowsEJBEAR.ear">
+            <content sha1="71dd2a463010b38142f577c23458e60de6fc4571"/>
+        </deployment>
+        <deployment name="JRPDTESTEAR.ear" runtime-name="JRPDTESTEAR.ear">
+            <content sha1="41576c59a42ca32e304a24408116ab56c8965254"/>
+        </deployment>
+        <deployment name="N0SE000B.ear" runtime-name="N0SE000B.ear">
+            <content sha1="0dff13731005713faeb7ce0b724913c106b39cc8"/>
+        </deployment>
+        <deployment name="N0SE000C.ear" runtime-name="N0SE000C.ear">
+            <content sha1="9c75a4eeb66a8879c327e6e9f54cc27c56b81418"/>
+        </deployment>
+        <deployment name="EO00SPTB.ear" runtime-name="EO00SPTB.ear">
+            <content sha1="171d88bdea60e3663d87c2cc4d72061050d3827a"/>
+        </deployment>
+        <deployment name="EO00P09C.ear" runtime-name="EO00P09C.ear">
+            <content sha1="466df2bb42e1e9581db961ff2ced04d45888e37c"/>
+        </deployment>
+        <deployment name="EO00EX2C.ear" runtime-name="EO00EX2C.ear">
+            <content sha1="ebb02e65037264f52277ed073b8868679b6961b4"/>
+        </deployment>
+        <deployment name="S3A1000C.ear" runtime-name="S3A1000C.ear">
+            <content sha1="2329fee5bdf8d12c38b9d4c851d964ce20844069"/>
+        </deployment>
+        <deployment name="N3CO000C.ear" runtime-name="N3CO000C.ear">
+            <content sha1="0f69eb3752b2174908f3d6b5de5482aca4d2d331"/>
+        </deployment>
+        <deployment name="N3MO000C.ear" runtime-name="N3MO000C.ear">
+            <content sha1="43697a68527fb0d0bdfd00ce73e5f941190b3605"/>
+        </deployment>
+        <deployment name="testDummy.ear" runtime-name="testDummy.ear">
+            <content sha1="5ad5a729a3a14ec16cf417e447db4769f7eb4e36"/>
+        </deployment>
+        <deployment name="EO0ACSSC.ear" runtime-name="EO0ACSSC.ear">
+            <content sha1="cff7aa79ace2398234441c6ea36c54103abb8a77"/>
+        </deployment>
+        <deployment name="N3AD000C.ear" runtime-name="N3AD000C.ear">
+            <content sha1="a9e84847ad72007ceb9874409096390b383e3228"/>
+        </deployment>
+        <deployment name="N3AD000B.ear" runtime-name="N3AD000B.ear">
+            <content sha1="1329fa56fec06e9af060c85ff2418bf944bba76a"/>
+        </deployment>
+        <deployment name="N3GC000B.ear" runtime-name="N3GC000B.ear">
+            <content sha1="ae6dbbd94135ffade190077551c6577bc54ef073"/>
+        </deployment>
+        <deployment name="N3MO000B.ear" runtime-name="N3MO000B.ear">
+            <content sha1="f6656513c051b0d39b4b11f5affdf964ab8354fb"/>
+        </deployment>
+        <deployment name="PRUE0X.ear" runtime-name="PRUE0X.ear">
+            <content sha1="274827dac0bd7901816d4890a1cf3509a450b998"/>
+        </deployment>
+        <deployment name="N3GN000C.ear" runtime-name="N3GN000C.ear">
+            <content sha1="1ac211fc71a235724cfe58a3802501ff50b1267b"/>
+        </deployment>
+        <deployment name="N0VR000C.ear" runtime-name="N0VR000C.ear">
+            <content sha1="d1d500b7ccb46db67db829ceaa12494444f24b52"/>
+        </deployment>
+        <deployment name="N3SM000B.ear" runtime-name="N3SM000B.ear">
+            <content sha1="64d7ce29330eaba6727151c96433f997acc4c747"/>
+        </deployment>
+        <deployment name="N0VR000B.ear" runtime-name="N0VR000B.ear">
+            <content sha1="902b2becf993ec7418cc932b812e2d0ea6f11ef1"/>
+        </deployment>
+        <deployment name="NMQS002C.ear" runtime-name="NMQS002C.ear">
+            <content sha1="d8ea663db03a415c7b69fdba07605230321a0a4d"/>
+        </deployment>
+        <deployment name="NMQS000B.ear" runtime-name="NMQS000B.ear">
+            <content sha1="d7aa819a3470c341a80cfee29b2de693079473d9"/>
+        </deployment>
+        <deployment name="NMQS001C.ear" runtime-name="NMQS001C.ear">
+            <content sha1="4aee44806ee901c050d7eeadc2655778759ebdc3"/>
+        </deployment>
+        <deployment name="NMQS001B.ear" runtime-name="NMQS001B.ear">
+            <content sha1="254c0ed0d9d0f5ad8c9ce71e8ec6f235384a458a"/>
+        </deployment>
+        <deployment name="JREJ000B.ear" runtime-name="JREJ000B.ear">
+            <content sha1="cc72127559dd46cfed72890f2f2a5a3bdf636cd6"/>
+        </deployment>
+        <deployment name="PRUE1X.ear" runtime-name="PRUE1X.ear">
+            <content sha1="819cc9ee939fd35fb91ccb89613819b635bb5af4"/>
+        </deployment>
+        <deployment name="EO00P13C.ear" runtime-name="EO00P13C.ear">
+            <content sha1="f383208b8416d9f8a242f963fad2c3a6efdef9e2"/>
+        </deployment>
+        <deployment name="EO0AHSTC.ear" runtime-name="EO0AHSTC.ear">
+            <content sha1="5d870c5b19f3e851bc90df3424947c6fd57e827c"/>
+        </deployment>
+        <deployment name="SEEA001C.ear" runtime-name="SEEA001C.ear">
+            <content sha1="4f4f64c08cacadf0e224b2f290f647ad8bc61e2f"/>
+        </deployment>
+        <deployment name="S3A1000B.ear" runtime-name="S3A1000B.ear">
+            <content sha1="5d65594c4f7671741f8411fde3a2276b6e3554bf"/>
+        </deployment>
+        <deployment name="snoopjboss.war" runtime-name="snoopjboss.war">
+            <content sha1="cfc71f98a28cc553928383a79102d797872272c2"/>
+        </deployment>
+        <deployment name="SEWA.ear" runtime-name="SEWA.ear">
+            <content sha1="7b20cc527216f1a32e4072dc3a32ccafa5683cb2"/>
+        </deployment>
+        <deployment name="JRD5.ear" runtime-name="JRD5.ear">
+            <content sha1="c16477f49b123f284b8a9cb121ebc61e8df3d67a"/>
+        </deployment>
+        <deployment name="JRIN.ear" runtime-name="JRIN.ear">
+            <content sha1="9c8010cfad4613e27d5af112471bc916942cb6c5"/>
+        </deployment>
+        <deployment name="JRPX.ear" runtime-name="JRPX.ear">
+            <content sha1="21024c72cff292ff1cedaf8a23b3b16c654effee"/>
+        </deployment>
+        <deployment name="SEAU.ear" runtime-name="SEAU.ear">
+            <content sha1="4d6353fdac3caa6757ee4723f353d05641ce9216"/>
+        </deployment>
+        <deployment name="SELO.ear" runtime-name="SELO.ear">
+            <content sha1="4d1b42425266c0738ce2a91085fe38c550e4e57d"/>
+        </deployment>
+        <deployment name="JRIW.ear" runtime-name="JRIW.ear">
+            <content sha1="acf0ee1b48d683b2017bb3a58a2206ff4c345d98"/>
+        </deployment>
+        <deployment name="UFW0.ear" runtime-name="UFW0.ear">
+            <content sha1="713b13fe613dd130d35f64fe7b1d6e2b8ef0f2eb"/>
+        </deployment>
+        <deployment name="S1A1000B.ear" runtime-name="S1A1000B.ear">
+            <content sha1="9c77cc84188b49d3f83136cc8dafb3e7c6818d48"/>
+        </deployment>
+        <deployment name="SEGP.ear" runtime-name="SEGP.ear">
+            <content sha1="66cd5a730c2a73e37f06a29549c45cddd270acb1"/>
+        </deployment>
+        <deployment name="SEPF.ear" runtime-name="SEPF.ear">
+            <content sha1="f8a75b1ac23c8efc96b4af5d4bc038bac04f8cad"/>
+        </deployment>
+        <deployment name="EWBO.ear" runtime-name="EWBO.ear">
+            <content sha1="c11e455c1b4cff5dd98f8b7e5874df7dba37f388"/>
+        </deployment>
+        <deployment name="EWWS.ear" runtime-name="EWWS.ear">
+            <content sha1="d1b99c44e84fe3467234c6663d1d394dac8cd78f"/>
+        </deployment>
+        <deployment name="N3FM000C.ear" runtime-name="N3FM000C.ear">
+            <content sha1="ae950202d1be17d1bfa628be513af08dac1a0ac3"/>
+        </deployment>
+        <deployment name="N3FM000B.ear" runtime-name="N3FM000B.ear">
+            <content sha1="b6eb2fa58952077ea7f70d36ffbde40daccd69b3"/>
+        </deployment>
+        <deployment name="activemq-rar.rar" runtime-name="activemq-rar.rar">
+            <content sha1="66834feec72a9bf9e7edf61e724d98254b4f1571"/>
+        </deployment>
+        <deployment name="JRCK.ear" runtime-name="JRCK.ear">
+            <content sha1="251a8228b16364151289a0a08a1535d8bbba36ee"/>
+        </deployment>
+        <deployment name="N3MS000B.ear" runtime-name="N3MS000B.ear">
+            <content sha1="aab966a528cb3c8ae013f8a2b0a8b879ea10f3e9"/>
+        </deployment>
+        <deployment name="PDADWX.ear" runtime-name="PDADWX.ear">
+            <content sha1="decedbad3cd2054deafa9de1f0836e139f49153d"/>
+        </deployment>
+        <deployment name="IFES.ear" runtime-name="IFES.ear">
+            <content sha1="34ee8ba6d67d2afb014d47e68c94f9f56ef8d024"/>
+        </deployment>
+        <deployment name="HCRV.ear" runtime-name="HCRV.ear">
+            <content sha1="cceb118c55a8790f16b57974ce881b0b76a93e11"/>
+        </deployment>
+        <deployment name="JRFP.ear" runtime-name="JRFP.ear">
+            <content sha1="73f231910f31d2b56a1d62c7c8128afd503bc2b4"/>
+        </deployment>
+        <deployment name="RW00.ear" runtime-name="RW00.ear">
+            <content sha1="e82e90fcf0d0bf002d079b9d26cab1549ad95b09"/>
+        </deployment>
+        <deployment name="JR00.ear" runtime-name="JR00.ear">
+            <content sha1="e7938abc6f077138a72276c65f164306a6e4dd85"/>
+        </deployment>
+        <deployment name="FKD3.ear" runtime-name="FKD3.ear">
+            <content sha1="f97bbfcbf551ed295fd54210bddf3f51782527f6"/>
+        </deployment>
+        <deployment name="S1A1000C.ear" runtime-name="S1A1000C.ear">
+            <content sha1="9d7408dc071bac65e3c746249fa481de605c7135"/>
+        </deployment>
+        <deployment name="IRDA.ear" runtime-name="IRDA.ear">
+            <content sha1="3c0a1d28fe3fd9d8b9516ab95c0c1e67b61432e7"/>
+        </deployment>
+        <deployment name="JRAW.ear" runtime-name="JRAW.ear">
+            <content sha1="117f841366db81b47c6ccad1cde5de7938f3a0eb"/>
+        </deployment>
+        <deployment name="FKD2.ear" runtime-name="FKD2.ear">
+            <content sha1="f8a7af3d3880821b6f4bd755343b41f5cd881886"/>
+        </deployment>
+        <deployment name="SS00.ear" runtime-name="SS00.ear">
+            <content sha1="2cd18c00e98a4b7078bc47c728594adf64020513"/>
+        </deployment>
+        <deployment name="IRCW.ear" runtime-name="IRCW.ear">
+            <content sha1="a8890102fa567c6c74ff17441fba6d06edccbbaf"/>
+        </deployment>
+        <deployment name="RR00.ear" runtime-name="RR00.ear">
+            <content sha1="6dcf6e0ef2ec07d851b0258f9d8e63f688bc366f"/>
+        </deployment>
+        <deployment name="HRI0.ear" runtime-name="HRI0.ear">
+            <content sha1="160819724c3933b83107c5de3b3708f91fa35aef"/>
+        </deployment>
+        <deployment name="HRI1.ear" runtime-name="HRI1.ear">
+            <content sha1="5fe5178f57fcc31cbc57a92cb2c52181e8911cd3"/>
+        </deployment>
+        <deployment name="HRI2.ear" runtime-name="HRI2.ear">
+            <content sha1="a70dddd9c4ba66e13a15b981665b2977a24312ce"/>
+        </deployment>
+        <deployment name="HRI3.ear" runtime-name="HRI3.ear">
+            <content sha1="c98b861cda290b05821bbd0ba068999a8d24a356"/>
+        </deployment>
+        <deployment name="HRI7.ear" runtime-name="HRI7.ear">
+            <content sha1="a3f46214ef2874085bdec4c817eb86fafdfdb29f"/>
+        </deployment>
+        <deployment name="HRI8.ear" runtime-name="HRI8.ear">
+            <content sha1="f47b45d689d0936f20cc5a3fbcdd274ee1ef1686"/>
+        </deployment>
+        <deployment name="HRI9.ear" runtime-name="HRI9.ear">
+            <content sha1="afded422cdc1f7db897d0e60aa8348938cfb3353"/>
+        </deployment>
+        <deployment name="HRS0.ear" runtime-name="HRS0.ear">
+            <content sha1="a2ab28b9634344ef14b88094581493ac7ec7102e"/>
+        </deployment>
+        <deployment name="HRCE.ear" runtime-name="HRCE.ear">
+            <content sha1="0d6d6210e35170a03ec88954c48dc15b93f74d8b"/>
+        </deployment>
+        <deployment name="IBWE.ear" runtime-name="IBWE.ear">
+            <content sha1="0ac6117eea44bddaa08c78fe46be801e5d2e273b"/>
+        </deployment>
+        <deployment name="RRPD.ear" runtime-name="RRPD.ear">
+            <content sha1="e7dd6ae5ef58c0dd0ada04b77a93bad775df5963"/>
+        </deployment>
+        <deployment name="SIES.ear" runtime-name="SIES.ear">
+            <content sha1="07b2734a1b16b80c4ff421a752fcb7807603d4d5"/>
+        </deployment>
+        <deployment name="SIW1.ear" runtime-name="SIW1.ear">
+            <content sha1="9ff6bf3ac55eabe3a9e24105f3409c46146eb5d3"/>
+        </deployment>
+        <deployment name="RTDE.ear" runtime-name="RTDE.ear">
+            <content sha1="bbb5a72c780fa54195ec86b472b6bf0ef272c8b5"/>
+        </deployment>
+        <deployment name="N0GL000B.ear" runtime-name="N0GL000B.ear">
+            <content sha1="6902eae4c678d27fcad8a1f98fa2786e8086e568"/>
+        </deployment>
+        <deployment name="N0GL000C.ear" runtime-name="N0GL000C.ear">
+            <content sha1="463b8e64f2ecb0d29d52d4147e578b288e6aa1fc"/>
+        </deployment>
+        <deployment name="SEES000B.ear" runtime-name="SEES000B.ear">
+            <content sha1="4ec22f4c0065cf288a682ef4c242276bb48e59a2"/>
+        </deployment>
+        <deployment name="SICC.ear" runtime-name="SICC.ear">
+            <content sha1="c775804af946445bb6eda95b0348770b337adb75"/>
+        </deployment>
+        <deployment name="I5CV.ear" runtime-name="I5CV.ear">
+            <content sha1="c31c08e400711af83cd76569a856fe8a780e7fa4"/>
+        </deployment>
+        <deployment name="I5TF.ear" runtime-name="I5TF.ear">
+            <content sha1="fc50a1b8411c25857af83ed5d56a4db88e0f8d67"/>
+        </deployment>
+        <deployment name="RLT0.ear" runtime-name="RLT0.ear">
+            <content sha1="742dc94b0d15501360c8156581d3c5ca9698d7e7"/>
+        </deployment>
+        <deployment name="SEAD000B.ear" runtime-name="SEAD000B.ear">
+            <content sha1="8fd21762dc917bbdfcd49962c11eef57d81b8706"/>
+        </deployment>
+        <deployment name="S1A3000C.ear" runtime-name="S1A3000C.ear">
+            <content sha1="b1a1a1a79fa086c7b24f7e35ff910e073219d7d4"/>
+        </deployment>
+        <deployment name="S1A3000B.ear" runtime-name="S1A3000B.ear">
+            <content sha1="83bc8244a1df6791c870eaecf39e29d1c43ff14b"/>
+        </deployment>
+        <deployment name="NVA0.ear" runtime-name="NVA0.ear">
+            <content sha1="7076c89237c6b5cff5e8dd61324194dfa86c7821"/>
+        </deployment>
+        <deployment name="UJA0.ear" runtime-name="UJA0.ear">
+            <content sha1="956f1fcabfea60e0fb20cae0093877e9e1c3aa95"/>
+        </deployment>
+        <deployment name="YCEP.ear" runtime-name="YCEP.ear">
+            <content sha1="ceeff151ae13d8a5cff623ea3057fed1d59c2c16"/>
+        </deployment>
+        <deployment name="SIWB.ear" runtime-name="SIWB.ear">
+            <content sha1="11badbf5777d2c922a547e7321a570d7ff765f6c"/>
+        </deployment>
+        <deployment name="GW01.ear" runtime-name="GW01.ear">
+            <content sha1="f07af395379702c5d0956ea61a5785c5c56d964f"/>
+        </deployment>
+        <deployment name="JROD.ear" runtime-name="JROD.ear">
+            <content sha1="522e06723064ff68f33f0d776daef848e332dea5"/>
+        </deployment>
+        <deployment name="P7CE.ear" runtime-name="P7CE.ear">
+            <content sha1="4fd5e4030822ab1967d4111538d9a37cf3d29a2b"/>
+        </deployment>
+        <deployment name="GW03.ear" runtime-name="GW03.ear">
+            <content sha1="c5402abc6d9152c0452f94c007f8e44531d42859"/>
+        </deployment>
+        <deployment name="GW02.ear" runtime-name="GW02.ear">
+            <content sha1="d1222fb27faff9564e2c40dd4f51551261edf3cd"/>
+        </deployment>
+        <deployment name="EWSC001B.ear" runtime-name="EWSC001B.ear">
+            <content sha1="2793568242413e10e987481a5b7087a184b549c9"/>
+        </deployment>
+        <deployment name="GWI2.ear" runtime-name="GWI2.ear">
+            <content sha1="979a4ebeea387b83c45f3adff2dc0396d22a7346"/>
+        </deployment>
+        <deployment name="SRWM.ear" runtime-name="SRWM.ear">
+            <content sha1="51f81b93452fadc68b27187064db95ede78655e1"/>
+        </deployment>
+        <deployment name="SEAP.ear" runtime-name="SEAP.ear">
+            <content sha1="eb04e5a8af79b81548d5b4742f342fb9c0c81337"/>
+        </deployment>
+        <deployment name="IWGE.ear" runtime-name="IWGE.ear">
+            <content sha1="2bacd24b9d8e5708a3d78aa6262720caaad38ed0"/>
+        </deployment>
+        <deployment name="testDB2.ear" runtime-name="testDB2.ear">
+            <content sha1="2d8de3c2c168e441904eacc044628a7be973a0cb"/>
+        </deployment>
+        <deployment name="SEEV.ear" runtime-name="SEEV.ear">
+            <content sha1="9ee12191568eb34c29e2d578c421bb86c31b9ea4"/>
+        </deployment>
+        <deployment name="FAW0.ear" runtime-name="FAW0.ear">
+            <content sha1="9b09aa0f6ceb3bdac7f9bce804878a6717da08a1"/>
+        </deployment>
+        <deployment name="PDWD.ear" runtime-name="PDWD.ear">
+            <content sha1="56febd2e5ccc144ca46661cab3cc5c72f76fec87"/>
+        </deployment>
+        <deployment name="PDW0.ear" runtime-name="PDW0.ear">
+            <content sha1="bd67b152df3bbb0c11a9d1dc9f71175173f38d0b"/>
+        </deployment>
+        <deployment name="PDW2.ear" runtime-name="PDW2.ear">
+            <content sha1="339b802a62c07c5d7f51c66d97a73f8e99730871"/>
+        </deployment>
+        <deployment name="T5ME.ear" runtime-name="T5ME.ear">
+            <content sha1="9541ae3ab71096768d7416342fbe32e2f10f1e05"/>
+        </deployment>
+        <deployment name="XUWE.ear" runtime-name="XUWE.ear">
+            <content sha1="8e14d45ee16018a6d390ce89337c614fcac75f04"/>
+        </deployment>
+        <deployment name="P500.ear" runtime-name="P500.ear">
+            <content sha1="aa1054550b59feb3321d78c4e8a6626c1b1e93cb"/>
+        </deployment>
+        <deployment name="SIGF.ear" runtime-name="SIGF.ear">
+            <content sha1="69dd3a38903bfece95c896678cc56bf7f136b835"/>
+        </deployment>
+        <deployment name="MXAA.ear" runtime-name="MXAA.ear">
+            <content sha1="854a1134782798d5f7924b4693c85c2ea77e4f4a"/>
+        </deployment>
+        <deployment name="SRSMEnvio.ear" runtime-name="SRSMEnvio.ear">
+            <content sha1="0f02c8a0cf61b9565227c2d682fbd6a06ed052d5"/>
+        </deployment>
+        <deployment name="PDDOCUWS.ear" runtime-name="PDDOCUWS.ear">
+            <content sha1="6a05c8edf88518f2de54495310fb4fccaa9c932f"/>
+        </deployment>
+        <deployment name="SAMPLE.ear" runtime-name="SAMPLE.ear">
+            <content sha1="2d0cdb73c276bdcd75c936700dd3153a97e166df"/>
+        </deployment>
+        <deployment name="ROOT.war" runtime-name="ROOT.war">
+            <content sha1="49bbb40e2347678c0bfa40aedef615b1eb007dc5"/>
+        </deployment>
+        <deployment name="I3CN.ear" runtime-name="I3CN.ear">
+            <content sha1="ce6685aa94291d16808311f12114a938806f95dc"/>
+        </deployment>
+        <deployment name="SEEA002C.ear" runtime-name="SEEA002C.ear">
+            <content sha1="b742daa3f4cbb60fdba02c14ba121ab7b1a0e466"/>
+        </deployment>
+        <deployment name="IFAB.ear" runtime-name="IFAB.ear">
+            <content sha1="1dbdc70a77d8627734902995f8590e2ab585d358"/>
+        </deployment>
+        <deployment name="snoop.ear" runtime-name="snoop.ear">
+            <content sha1="a2b3d2c419d917baf4b8dfa21fa5b2b6a86855a1"/>
+        </deployment>
+        <deployment name="DAFV.ear" runtime-name="DAFV.ear">
+            <content sha1="f8e440d7ea7bfc30b5cc5ecca4d392889a2257b1"/>
+        </deployment>
+        <deployment name="S1BIGIP.ear" runtime-name="S1BIGIP.ear">
+            <content sha1="442df0ac61161940d033099e33b51fb9505cfee2"/>
+        </deployment>
+        <deployment name="SRSMRecepcionWS.ear" runtime-name="SRSMRecepcionWS.ear">
+            <content sha1="3b24407a5bf566f5fe2b1ba62c5b3fbf7847e449"/>
+        </deployment>
+        <deployment name="TESTREND.ear" runtime-name="TESTREND.ear">
+            <content sha1="ce0779d86a06a4b0236eedeac898a87282470049"/>
+        </deployment>
+        <deployment name="K900.ear" runtime-name="K900.ear">
+            <content sha1="9a859940f5916765c9493532604d3d37d01655eb"/>
+        </deployment>
+        <deployment name="FAAD.ear" runtime-name="FAAD.ear">
+            <content sha1="af920647daa2d9393b8a38a6b6dafe5ff706d150"/>
+        </deployment>
+        <deployment name="testSnoopWeb.ear" runtime-name="testSnoopWeb.ear">
+            <content sha1="c2b200d87beb8d18a42bc0afa48c668b188616ec"/>
+        </deployment>
+        <deployment name="JRPT.ear" runtime-name="JRPT.ear">
+            <content sha1="438df274889fe814799264ab96b3ee7fa8002007"/>
+        </deployment>
+        <deployment name="TYWE.ear" runtime-name="TYWE.ear">
+            <content sha1="735c409de324677a5184acb080b886debe30a3d9"/>
+        </deployment>
+        <deployment name="HEGE.ear" runtime-name="HEGE.ear">
+            <content sha1="2498a49d277bba4539dc25695ebdda7c4fd4e5ac"/>
+        </deployment>
+        <deployment name="TJWE.ear" runtime-name="TJWE.ear">
+            <content sha1="270f019ba83857bda8aed9a883f67077879932fa"/>
+        </deployment>
+        <deployment name="VIAX.ear" runtime-name="VIAX.ear">
+            <content sha1="9357397493c0fa10b4ca3783666d46e8b80b8317"/>
+        </deployment>
+        <deployment name="IBSW.ear" runtime-name="IBSW.ear">
+            <content sha1="2f7a1b07ef0ae30867ddd7650cadf68b4e0db298"/>
+        </deployment>
+        <deployment name="EO00ADMC.ear" runtime-name="EO00ADMC.ear">
+            <content sha1="927af186f8cb26ab05fb13f98e140bf25a130431"/>
+        </deployment>
+        <deployment name="EO00EXPC.ear" runtime-name="EO00EXPC.ear">
+            <content sha1="42b9d514223c514c239de35c1709fb45fabf6961"/>
+        </deployment>
+        <deployment name="EO00HLPC.ear" runtime-name="EO00HLPC.ear">
+            <content sha1="9bdbe637f52dded83d7bf31942b3b2a0f585f8a9"/>
+        </deployment>
+        <deployment name="EO00PPLB.ear" runtime-name="EO00PPLB.ear">
+            <content sha1="5e07f2e5991dbababd286d2795551f5f039c89e2"/>
+        </deployment>
+        <deployment name="EO00PPLC.ear" runtime-name="EO00PPLC.ear">
+            <content sha1="8f79de38eb5a5494882b1c7244299a50c712d3e6"/>
+        </deployment>
+        <deployment name="SEEA000C.ear" runtime-name="SEEA000C.ear">
+            <content sha1="456bca3f61e660ab44e2ff57a7fa2f622883859a"/>
+        </deployment>
+        <deployment name="SEPR000C.ear" runtime-name="SEPR000C.ear">
+            <content sha1="f3fc5969dc23e2ad317ad5bcd133b69f520a3368"/>
+        </deployment>
+        <deployment name="EO0BHSTC.ear" runtime-name="EO0BHSTC.ear">
+            <content sha1="e8cbb163fb0919962c87dd4fa7c5bbd3faa617d0"/>
+        </deployment>
+        <deployment name="EO0BHSTB.ear" runtime-name="EO0BHSTB.ear">
+            <content sha1="94322994431ed61a297498ed784be4d776e60d71"/>
+        </deployment>
+        <deployment name="PJWB.ear" runtime-name="PJWB.ear">
+            <content sha1="e58e3d72929a6dceae190d195f5dab44bfbb578c"/>
+        </deployment>
+        <deployment name="SRMV.ear" runtime-name="SRMV.ear">
+            <content sha1="ab783ce74dffe2bf3176eab3b39051b665e06911"/>
+        </deployment>
+        <deployment name="I3CF.ear" runtime-name="I3CF.ear">
+            <content sha1="349c3eb65de552b0295fb3530bb6f3e0742fa86e"/>
+        </deployment>
+        <deployment name="I3TS.ear" runtime-name="I3TS.ear">
+            <content sha1="904fdd3759374f46ca6e73e4ef4a66586a9fda5f"/>
+        </deployment>
+        <deployment name="HEVI.ear" runtime-name="HEVI.ear">
+            <content sha1="f7a72e19babf806fafe55b28cb102bc7d75b761d"/>
+        </deployment>
+        <deployment name="NMGP000C.ear" runtime-name="NMGP000C.ear">
+            <content sha1="68cbae1f4794ae425c641ef5aa3016f3fbd0b084"/>
+        </deployment>
+        <deployment name="NMGP000B.ear" runtime-name="NMGP000B.ear">
+            <content sha1="c11cf75586c66c6a4f1cb2698557d66a8faf9847"/>
+        </deployment>
+        <deployment name="TYWB.ear" runtime-name="TYWB.ear">
+            <content sha1="1fd73cd141a174775c33e31e4d86c5f6a5c68b18"/>
+        </deployment>
+        <deployment name="EWNT001B.ear" runtime-name="EWNT001B.ear">
+            <content sha1="089a6acbd69efcab1a4b7536e71b84bacc465013"/>
+        </deployment>
+        <deployment name="I5S2.ear" runtime-name="I5S2.ear">
+            <content sha1="e0e4c7e53182b9b04010e407f633bbf3902d1dab"/>
+        </deployment>
+        <deployment name="HCME.ear" runtime-name="HCME.ear">
+            <content sha1="c12c7f9b6b3e740727fb646dcb46a333c2166666"/>
+        </deployment>
+        <deployment name="I5S1.ear" runtime-name="I5S1.ear">
+            <content sha1="0054bd005ff3a38deaf080fde35e2d06ec1c2631"/>
+        </deployment>
+        <deployment name="I5ME.ear" runtime-name="I5ME.ear">
+            <content sha1="18e3e09b72f64082fcc005f9be949051df869e71"/>
+        </deployment>
+        <deployment name="PJWE.ear" runtime-name="PJWE.ear">
+            <content sha1="552d6dd126302ae23fa03907019851a914565193"/>
+        </deployment>
+        <deployment name="KEIT.ear" runtime-name="KEIT.ear">
+            <content sha1="0872322f4a93d8595ea64b027115fe88c684e026"/>
+        </deployment>
+        <deployment name="UTNC.ear" runtime-name="UTNC.ear">
+            <content sha1="dbf8fa82de127686427511830e2dab8e5b763fe0"/>
+        </deployment>
+        <deployment name="HRF3.ear" runtime-name="HRF3.ear">
+            <content sha1="2d56177f462b9fedbffa14854fa1eeede39f2eb1"/>
+        </deployment>
+        <deployment name="EWRW000B.ear" runtime-name="EWRW000B.ear">
+            <content sha1="c2a50dc0c57aaabfabed4992735f41b842f1e264"/>
+        </deployment>
+        <deployment name="SEEA004C.ear" runtime-name="SEEA004C.ear">
+            <content sha1="632373a562673851a644d83130bc12b367ea0e1f"/>
+        </deployment>
+        <deployment name="UDIT.ear" runtime-name="UDIT.ear">
+            <content sha1="23aa70368974204bf11bec6aa11f4499a7eb1165"/>
+        </deployment>
+        <deployment name="EO00P12C.ear" runtime-name="EO00P12C.ear">
+            <content sha1="17dcba0a4be899ce0beb123a15a00c32bdaf5326"/>
+        </deployment>
+        <deployment name="SEEA003C.ear" runtime-name="SEEA003C.ear">
+            <content sha1="136896399fa4413315f4cedbfcbd21747911bd93"/>
+        </deployment>
+        <deployment name="TC00.ear" runtime-name="TC00.ear">
+            <content sha1="f832b99504f39baaa18eb89f78d9015059126c2c"/>
+        </deployment>
+        <deployment name="UDDA.ear" runtime-name="UDDA.ear">
+            <content sha1="958f10854e7b5282fd0bc58b96d3d46438cb786f"/>
+        </deployment>
+        <deployment name="NTCO.ear" runtime-name="NTCO.ear">
+            <content sha1="81e542d7c54ebb4e6a6abf79292846244cb69b06"/>
+        </deployment>
+        <deployment name="I5GE.ear" runtime-name="I5GE.ear">
+            <content sha1="ec3f20e154571a9add8877e691a774951931dd6d"/>
+        </deployment>
+        <deployment name="TK00.ear" runtime-name="TK00.ear">
+            <content sha1="137436cc85ca3f59de81ce20068a8a8104f0c917"/>
+        </deployment>
+        <deployment name="GHAC.ear" runtime-name="GHAC.ear">
+            <content sha1="bbf8fa90298fada53bd6404f4e4d7fd33b7e046a"/>
+        </deployment>
+        <deployment name="wmq.jmsra.rar" runtime-name="wmq.jmsra.rar">
+            <content sha1="73f3f95d33993f968113d1ff268860bbbc737daa"/>
+        </deployment>
+        <deployment name="NTGI.ear" runtime-name="NTGI.ear">
+            <content sha1="8aad28b61afb2935a95972de7c54a1568e444875"/>
+        </deployment>
+        <deployment name="KUPW.ear" runtime-name="KUPW.ear">
+            <content sha1="ffa8442b2c61658b9419a694819cabebd1601c7c"/>
+        </deployment>
+        <deployment name="I3CNWS.ear" runtime-name="I3CNWS.ear">
+            <content sha1="b313d5cbd4670bac686a6bd7ccc54c403f6705fd"/>
+        </deployment>
+        <deployment name="RQMN.ear" runtime-name="RQMN.ear">
+            <content sha1="db0c5e11c1b68a8771e65186ca3410bba18e10d7"/>
+        </deployment>
+        <deployment name="N5MP000B.ear" runtime-name="N5MP000B.ear">
+            <content sha1="f77a3effde5cecc4f97d7245e38585e573b6c724"/>
+        </deployment>
+        <deployment name="BTW1.ear" runtime-name="BTW1.ear">
+            <content sha1="92ec768a8091801ffe4b147a81efe1792b3858b9"/>
+        </deployment>
+        <deployment name="T0BD.ear" runtime-name="T0BD.ear">
+            <content sha1="093396c90138089c67e70db4f8db758921278a24"/>
+        </deployment>
+        <deployment name="T0EN.ear" runtime-name="T0EN.ear">
+            <content sha1="e660ec5c217af5caad03c8849fad17efe77bc3e5"/>
+        </deployment>
+        <deployment name="T0ENBD.ear" runtime-name="T0ENBD.ear">
+            <content sha1="1b4bc4296faacbbe88e122856e2ad82f24f49b83"/>
+        </deployment>
+        <deployment name="T0ENEJB.ear" runtime-name="T0ENEJB.ear">
+            <content sha1="7afb356f6c4e1316fbb84f0bfe63bc4ee174e4ec"/>
+        </deployment>
+        <deployment name="T0IE.ear" runtime-name="T0IE.ear">
+            <content sha1="2dfeea5e35f5ac4359e3715053f32f83752c412c"/>
+        </deployment>
+        <deployment name="T0M0.ear" runtime-name="T0M0.ear">
+            <content sha1="2316bf96a6cb1239b6c4f3c9f63320fbaf07fc59"/>
+        </deployment>
+        <deployment name="R2DE.ear" runtime-name="R2DE.ear">
+            <content sha1="2b82a13dae2a63c4a3eef3bd02624ab7c1dbe01a"/>
+        </deployment>
+        <deployment name="parameterapp.war" runtime-name="parameterapp.war">
+            <content sha1="ddb5da9f9b8cf9f4d7f3f50957b4a6a60e5e4dcc"/>
+        </deployment>
+        <deployment name="SPIZ.ear" runtime-name="SPIZ.ear">
+            <content sha1="e0e477765438230bd3aa37414581d3af1737a3af"/>
+        </deployment>
+        <deployment name="N3NU000B.ear" runtime-name="N3NU000B.ear">
+            <content sha1="195b23cc2831dab90939c6eba913ceeb434c1eb5"/>
+        </deployment>
+        <deployment name="N3PE000B.ear" runtime-name="N3PE000B.ear">
+            <content sha1="18bf69b195ff5c9a891e798872c6af2b51fac4bf"/>
+        </deployment>
+        <deployment name="N3VA000B.ear" runtime-name="N3VA000B.ear">
+            <content sha1="5b5bbfa7724d90581760b07143af8ac0f1eb36b1"/>
+        </deployment>
+        <deployment name="N3RT000B.ear" runtime-name="N3RT000B.ear">
+            <content sha1="473ea55fc0ca848c4d3e9ecd74fad02d19d5c351"/>
+        </deployment>
+        <deployment name="RWBO.ear" runtime-name="RWBO.ear">
+            <content sha1="fcb9c1d5a935030af6e523a3926435f7724aa1b3"/>
+        </deployment>
+        <deployment name="P7RI.ear" runtime-name="P7RI.ear">
+            <content sha1="28b5a44e2c84fe77e25f5597f02719123d2d8ce2"/>
+        </deployment>
+        <deployment name="N5MP000C.ear" runtime-name="N5MP000C.ear">
+            <content sha1="f3982c43068e7e09309a8cbf4dcd32dee94909e9"/>
+        </deployment>
+        <deployment name="I5PT.ear" runtime-name="I5PT.ear">
+            <content sha1="1c97d7e8222eeee2fc40a6ce355ae5bb0a44c17f"/>
+        </deployment>
+        <deployment name="I3CD.ear" runtime-name="I3CD.ear">
+            <content sha1="f24c56f2158e9fcad53397e753ce3b64ba055cee"/>
+        </deployment>
+        <deployment name="N9CD000B.ear" runtime-name="N9CD000B.ear">
+            <content sha1="703fa42300ebe34ed36e2b8cf2f83e1405af44a1"/>
+        </deployment>
+        <deployment name="UTCC000B.ear" runtime-name="UTCC000B.ear">
+            <content sha1="fb892a88fa3629c033900fcfe8cee011641d132a"/>
+        </deployment>
+        <deployment name="PBCD.ear" runtime-name="PBCD.ear">
+            <content sha1="b8b16c2b420bc7868c2a95c9b35dc4d2a9e8a3a1"/>
+        </deployment>
+        <deployment name="N8DN000C.ear" runtime-name="N8DN000C.ear">
+            <content sha1="aefafe1a03e12e765e538de240d89d76ab26dde7"/>
+        </deployment>
+        <deployment name="TestEJB.ear" runtime-name="TestEJB.ear">
+            <content sha1="f49885d8373f0b1a27501cb103d81ae1c620385c"/>
+        </deployment>
+        <deployment name="TestEJBWeb.war" runtime-name="TestEJBWeb.war">
+            <content sha1="f1ae671ed78e910943a36a50e02766cb17660e7d"/>
+        </deployment>
+        <deployment name="EWGT.ear" runtime-name="EWGT.ear">
+            <content sha1="95a4e0b0f9225c84c050427aebd63dd0fb6c03bc"/>
+        </deployment>
+        <deployment name="EWNT002B.ear" runtime-name="EWNT002B.ear">
+            <content sha1="ff388720bc9ba0e56e73f166acab258e5715a0ae"/>
+        </deployment>
+        <deployment name="BTPR.ear" runtime-name="BTPR.ear">
+            <content sha1="26dcf9d1c11768027a7c8abdaae8e60dfe0655a2"/>
+        </deployment>
+        <deployment name="CEGE.ear" runtime-name="CEGE.ear">
+            <content sha1="b8071bd3f2331f6ca959c2c52155555cb533b0f1"/>
+        </deployment>
+        <deployment name="CESE.ear" runtime-name="CESE.ear">
+            <content sha1="7097708cb72a966210d92c970ab74dc996b143c2"/>
+        </deployment>
+        <deployment name="I5H1.ear" runtime-name="I5H1.ear">
+            <content sha1="f8ee2348bed4bd6ee3618ca7feae02a319e84507"/>
+        </deployment>
+        <deployment name="T0ME.ear" runtime-name="T0ME.ear">
+            <content sha1="ab11b758ae5e84dd788cd9d5b730af68d212ad18"/>
+        </deployment>
+        <deployment name="DCEO000B.ear" runtime-name="DCEO000B.ear">
+            <content sha1="0bac4cc50e90182157ee074b82a2ffeb39f85ec5"/>
+        </deployment>
+        <deployment name="HWAE.ear" runtime-name="HWAE.ear">
+            <content sha1="22fc373fd19f1f32fcf77e2e91040a1cde76d920"/>
+        </deployment>
+        <deployment name="HWME.ear" runtime-name="HWME.ear">
+            <content sha1="126e61a09b715c5eda2fc044621c21ca1ebe107b"/>
+        </deployment>
+        <deployment name="PGTR.ear" runtime-name="PGTR.ear">
+            <content sha1="47df0b90bf86a93dda485fa70c25cc415c905165"/>
+        </deployment>
+        <deployment name="SEAT000B.ear" runtime-name="SEAT000B.ear">
+            <content sha1="6094b5f09cc994557705d6a5dc92bdd6331887cc"/>
+        </deployment>
+        <deployment name="T0HW.ear" runtime-name="T0HW.ear">
+            <content sha1="d9001519f91eb966c50d610015c5befc2a9a1b89"/>
+        </deployment>
+        <deployment name="T0W0.ear" runtime-name="T0W0.ear">
+            <content sha1="1bea3609583dd3516fa22515a4e0238a1f437c2c"/>
+        </deployment>
+        <deployment name="PBIT.ear" runtime-name="PBIT.ear">
+            <content sha1="f99de1c2aa62287c488c9e307b50845158668aa2"/>
+        </deployment>
+        <deployment name="EWSF002B.ear" runtime-name="EWSF002B.ear">
+            <content sha1="cedb9551acaf976c1a6d89e4aaac8a03ed881143"/>
+        </deployment>
+        <deployment name="EWFO001B.ear" runtime-name="EWFO001B.ear">
+            <content sha1="e06b7e8e54cffd66eb81d65417e4c7281cf81de6"/>
+        </deployment>
+        <deployment name="BTEA.ear" runtime-name="BTEA.ear">
+            <content sha1="d31730bbad6d50b4726f6478caf75532c934574a"/>
+        </deployment>
+        <deployment name="GRIT.ear" runtime-name="GRIT.ear">
+            <content sha1="63b2887c3092e274e3a17a09fad3f321cf528a36"/>
+        </deployment>
+        <deployment name="HWTR.ear" runtime-name="HWTR.ear">
+            <content sha1="acf39905bf74e72bd9bdef23af63e319387c8919"/>
+        </deployment>
+        <deployment name="CGFW.ear" runtime-name="CGFW.ear">
+            <content sha1="af857b32c6a2406ab8c2aad396e2e3a0cfc0e84f"/>
+        </deployment>
+        <deployment name="CGSW.ear" runtime-name="CGSW.ear">
+            <content sha1="6b075c1d1aac8ffb85eceb046de636e20fee725c"/>
+        </deployment>
+        <deployment name="MFHT.ear" runtime-name="MFHT.ear">
+            <content sha1="81cbe812a50188511438f6db10e747aaf670a5c5"/>
+        </deployment>
+        <deployment name="EWFO002B.ear" runtime-name="EWFO002B.ear">
+            <content sha1="8a96cb99e0bdc70a4d6327bec0e3cf64bfe03064"/>
+        </deployment>
+        <deployment name="EWFO001C.ear" runtime-name="EWFO001C.ear">
+            <content sha1="03ea7766cd1560bd22be05b8710d3beb1caae124"/>
+        </deployment>
+        <deployment name="SEVE.ear" runtime-name="SEVE.ear">
+            <content sha1="74ad06695b734e96690836210001a201ef3c17d8"/>
+        </deployment>
+        <deployment name="N8DN000B.ear" runtime-name="N8DN000B.ear">
+            <content sha1="886d6a50d119d71680db86f2fa9d2675fc41cdd0"/>
+        </deployment>
+        <deployment name="EO00P31C.ear" runtime-name="EO00P31C.ear">
+            <content sha1="089d9d90200a5bac704d7dff501cd2cd73a5fff3"/>
+        </deployment>
+        <deployment name="CGFE.ear" runtime-name="CGFE.ear">
+            <content sha1="37aeb02ce79f23c5ad9df296557c4e55784838c9"/>
+        </deployment>
+        <deployment name="YCPA.ear" runtime-name="YCPA.ear">
+            <content sha1="b44ceca75e5493f83c58998407869fd1feb00cf4"/>
+        </deployment>
+        <deployment name="NIDE.ear" runtime-name="NIDE.ear">
+            <content sha1="d2bd62d43a0aa77ac8726ae61213bb0040cf2c68"/>
+        </deployment>
+    </deployments>
+
+    <server-groups>
+        <server-group name="intranet" profile="intranet">
+            <jvm name="intranet_jvm">
+                <heap size="1024m" max-size="1024m"/>
+                <permgen size="256m" max-size="256m"/>
+                <jvm-options>
+                    <option value="-server"/>
+                </jvm-options>
+            </jvm>
+            <socket-binding-group ref="presentacion-sockets"/>
+            <deployments>
+                <deployment name="N0RC000C.ear" runtime-name="N0RC000C.ear"/>
+                <deployment name="FK00.ear" runtime-name="FK00.ear"/>
+                <deployment name="P23PruebaIntegradaWindowsEAR.ear" runtime-name="P23PruebaIntegradaWindowsEAR.ear" enabled="false"/>
+                <deployment name="JRPDTESTEAR.ear" runtime-name="JRPDTESTEAR.ear"/>
+                <deployment name="N0SE000C.ear" runtime-name="N0SE000C.ear"/>
+                <deployment name="EO00P09C.ear" runtime-name="EO00P09C.ear"/>
+                <deployment name="EO00EX2C.ear" runtime-name="EO00EX2C.ear"/>
+                <deployment name="S3A1000C.ear" runtime-name="S3A1000C.ear"/>
+                <deployment name="N3CO000C.ear" runtime-name="N3CO000C.ear"/>
+                <deployment name="N3MO000C.ear" runtime-name="N3MO000C.ear"/>
+                <deployment name="EO0ACSSC.ear" runtime-name="EO0ACSSC.ear"/>
+                <deployment name="N3AD000C.ear" runtime-name="N3AD000C.ear"/>
+                <deployment name="N3GN000C.ear" runtime-name="N3GN000C.ear"/>
+                <deployment name="N0VR000C.ear" runtime-name="N0VR000C.ear"/>
+                <deployment name="NMQS002C.ear" runtime-name="NMQS002C.ear"/>
+                <deployment name="NMQS001C.ear" runtime-name="NMQS001C.ear"/>
+                <deployment name="EO00P13C.ear" runtime-name="EO00P13C.ear"/>
+                <deployment name="EO0AHSTC.ear" runtime-name="EO0AHSTC.ear"/>
+                <deployment name="snoopjboss.war" runtime-name="snoopjboss.war"/>
+                <deployment name="SEWA.ear" runtime-name="SEWA.ear"/>
+                <deployment name="SEAU.ear" runtime-name="SEAU.ear"/>
+                <deployment name="SELO.ear" runtime-name="SELO.ear"/>
+                <deployment name="JRPX.ear" runtime-name="JRPX.ear"/>
+                <deployment name="JRD5.ear" runtime-name="JRD5.ear"/>
+                <deployment name="UFW0.ear" runtime-name="UFW0.ear"/>
+                <deployment name="SEGP.ear" runtime-name="SEGP.ear"/>
+                <deployment name="SEPF.ear" runtime-name="SEPF.ear"/>
+                <deployment name="EWBO.ear" runtime-name="EWBO.ear"/>
+                <deployment name="EWWS.ear" runtime-name="EWWS.ear"/>
+                <deployment name="N3FM000C.ear" runtime-name="N3FM000C.ear"/>
+                <deployment name="JRCK.ear" runtime-name="JRCK.ear"/>
+                <deployment name="PDADWX.ear" runtime-name="PDADWX.ear" enabled="false"/>
+                <deployment name="IFES.ear" runtime-name="IFES.ear"/>
+                <deployment name="RW00.ear" runtime-name="RW00.ear"/>
+                <deployment name="FKD3.ear" runtime-name="FKD3.ear"/>
+                <deployment name="IRDA.ear" runtime-name="IRDA.ear"/>
+                <deployment name="JRAW.ear" runtime-name="JRAW.ear"/>
+                <deployment name="FKD2.ear" runtime-name="FKD2.ear"/>
+                <deployment name="SS00.ear" runtime-name="SS00.ear"/>
+                <deployment name="FileUpload.war" runtime-name="FileUpload.war"/>
+                <deployment name="RR00.ear" runtime-name="RR00.ear"/>
+                <deployment name="HRI0.ear" runtime-name="HRI0.ear"/>
+                <deployment name="HRI1.ear" runtime-name="HRI1.ear"/>
+                <deployment name="HRI2.ear" runtime-name="HRI2.ear"/>
+                <deployment name="HRI3.ear" runtime-name="HRI3.ear"/>
+                <deployment name="HRI7.ear" runtime-name="HRI7.ear"/>
+                <deployment name="HRI8.ear" runtime-name="HRI8.ear"/>
+                <deployment name="HRI9.ear" runtime-name="HRI9.ear"/>
+                <deployment name="HRS0.ear" runtime-name="HRS0.ear"/>
+                <deployment name="IBWE.ear" runtime-name="IBWE.ear"/>
+                <deployment name="RRPD.ear" runtime-name="RRPD.ear"/>
+                <deployment name="SIES.ear" runtime-name="SIES.ear"/>
+                <deployment name="SIW1.ear" runtime-name="SIW1.ear"/>
+                <deployment name="N0GL000C.ear" runtime-name="N0GL000C.ear"/>
+                <deployment name="RLT0.ear" runtime-name="RLT0.ear"/>
+                <deployment name="S1A3000C.ear" runtime-name="S1A3000C.ear"/>
+                <deployment name="NVA0.ear" runtime-name="NVA0.ear"/>
+                <deployment name="GW01.ear" runtime-name="GW01.ear"/>
+                <deployment name="GW02.ear" runtime-name="GW02.ear"/>
+                <deployment name="GW03.ear" runtime-name="GW03.ear"/>
+                <deployment name="GWI2.ear" runtime-name="GWI2.ear"/>
+                <deployment name="SRWM.ear" runtime-name="SRWM.ear"/>
+                <deployment name="SEAP.ear" runtime-name="SEAP.ear"/>
+                <deployment name="testDB2.ear" runtime-name="testDB2.ear"/>
+                <deployment name="SEEV.ear" runtime-name="SEEV.ear"/>
+                <deployment name="FAW0.ear" runtime-name="FAW0.ear"/>
+                <deployment name="PDWD.ear" runtime-name="PDWD.ear"/>
+                <deployment name="PDW0.ear" runtime-name="PDW0.ear"/>
+                <deployment name="PDW2.ear" runtime-name="PDW2.ear"/>
+                <deployment name="T5ME.ear" runtime-name="T5ME.ear"/>
+                <deployment name="XUWE.ear" runtime-name="XUWE.ear"/>
+                <deployment name="P500.ear" runtime-name="P500.ear"/>
+                <deployment name="SIGF.ear" runtime-name="SIGF.ear"/>
+                <deployment name="MXAA.ear" runtime-name="MXAA.ear"/>
+                <deployment name="SRSMEnvio.ear" runtime-name="SRSMEnvio.ear"/>
+                <deployment name="PDDOCUWS.ear" runtime-name="PDDOCUWS.ear"/>
+                <deployment name="SAMPLE.ear" runtime-name="SAMPLE.ear"/>
+                <deployment name="ROOT.war" runtime-name="ROOT.war"/>
+                <deployment name="I3CN.ear" runtime-name="I3CN.ear"/>
+                <deployment name="snoop.ear" runtime-name="snoop.ear"/>
+                <deployment name="DAFV.ear" runtime-name="DAFV.ear"/>
+                <deployment name="S1BIGIP.ear" runtime-name="S1BIGIP.ear"/>
+                <deployment name="SRSMRecepcionWS.ear" runtime-name="SRSMRecepcionWS.ear"/>
+                <deployment name="FAAD.ear" runtime-name="FAAD.ear"/>
+                <deployment name="K900.ear" runtime-name="K900.ear"/>
+                <deployment name="testSnoopWeb.ear" runtime-name="testSnoopWeb.ear"/>
+                <deployment name="JRPT.ear" runtime-name="JRPT.ear"/>
+                <deployment name="TYWE.ear" runtime-name="TYWE.ear"/>
+                <deployment name="HEGE.ear" runtime-name="HEGE.ear"/>
+                <deployment name="VIAX.ear" runtime-name="VIAX.ear"/>
+                <deployment name="IBSW.ear" runtime-name="IBSW.ear"/>
+                <deployment name="EO00ADMC.ear" runtime-name="EO00ADMC.ear"/>
+                <deployment name="EO00EXPC.ear" runtime-name="EO00EXPC.ear"/>
+                <deployment name="EO00PPLC.ear" runtime-name="EO00PPLC.ear"/>
+                <deployment name="EO00HLPC.ear" runtime-name="EO00HLPC.ear"/>
+                <deployment name="SEEA000C.ear" runtime-name="SEEA000C.ear"/>
+                <deployment name="SEPR000C.ear" runtime-name="SEPR000C.ear"/>
+                <deployment name="JRFP.ear" runtime-name="JRFP.ear"/>
+                <deployment name="EO0BHSTC.ear" runtime-name="EO0BHSTC.ear"/>
+                <deployment name="I3CF.ear" runtime-name="I3CF.ear"/>
+                <deployment name="I3TS.ear" runtime-name="I3TS.ear"/>
+                <deployment name="HEVI.ear" runtime-name="HEVI.ear"/>
+                <deployment name="NMGP000C.ear" runtime-name="NMGP000C.ear"/>
+                <deployment name="HCME.ear" runtime-name="HCME.ear"/>
+                <deployment name="PJWE.ear" runtime-name="PJWE.ear"/>
+                <deployment name="UTNC.ear" runtime-name="UTNC.ear"/>
+                <deployment name="SEEA004C.ear" runtime-name="SEEA004C.ear"/>
+                <deployment name="EO00P12C.ear" runtime-name="EO00P12C.ear"/>
+                <deployment name="SEEA003C.ear" runtime-name="SEEA003C.ear"/>
+                <deployment name="TC00.ear" runtime-name="TC00.ear"/>
+                <deployment name="UDDA.ear" runtime-name="UDDA.ear"/>
+                <deployment name="NTCO.ear" runtime-name="NTCO.ear"/>
+                <deployment name="I3CNWS.ear" runtime-name="I3CNWS.ear"/>
+                <deployment name="RQMN.ear" runtime-name="RQMN.ear"/>
+                <deployment name="parameterapp.war" runtime-name="parameterapp.war"/>
+                <deployment name="SPIZ.ear" runtime-name="SPIZ.ear"/>
+                <deployment name="RWBO.ear" runtime-name="RWBO.ear"/>
+                <deployment name="N5MP000C.ear" runtime-name="N5MP000C.ear"/>
+                <deployment name="I3CD.ear" runtime-name="I3CD.ear"/>
+                <deployment name="N8DN000C.ear" runtime-name="N8DN000C.ear"/>
+                <deployment name="EWGT.ear" runtime-name="EWGT.ear"/>
+                <deployment name="CEGE.ear" runtime-name="CEGE.ear"/>
+                <deployment name="CESE.ear" runtime-name="CESE.ear"/>
+                <deployment name="BTEA.ear" runtime-name="BTEA.ear"/>
+                <deployment name="EWFO001C.ear" runtime-name="EWFO001C.ear"/>
+                <deployment name="EO00P31C.ear" runtime-name="EO00P31C.ear"/>
+                <deployment name="CGFE.ear" runtime-name="CGFE.ear"/>
+            </deployments>
+            <system-properties>
+                <property name="tcp_cluster.initial_host" value="172.27.230.164[7700],172.27.230.165[7700]" boot-time="false"/>
+                <property name="org.apache.el.parser.COERCE_TO_ZERO" value="false" boot-time="false"/>
+                <property name="BIDE.ConfigPath" value="/var/jboss_config" boot-time="false"/>
+                <property name="smrv.enviosms.username" value="WDWASMQ1" boot-time="true"/>
+                <property name="smrv.enviosms.password" value="h35053ti" boot-time="true"/>
+                <property name="smrv.enviosms.transportType" value="CLIENT" boot-time="true"/>
+                <property name="smrv.enviosms.port" value="1414" boot-time="true"/>
+                <property name="smrv.enviosms.queueManager" value="CSQ1" boot-time="true"/>
+                <property name="smrv.enviosms.hostName" value="db2server" boot-time="true"/>
+                <property name="smrv.enviosms.channel" value="DESA.SVRCONN.TCP" boot-time="true"/>
+                <property name="user.language" value="es" boot-time="true"/>
+                <property name="user.country" value="ES" boot-time="true"/>
+                <property name="logback.configurationFile" value="/var/jboss_config/config/BIDE/log/logback.xml" boot-time="false"/>
+            </system-properties>
+        </server-group>
+        <server-group name="internet" profile="internet">
+            <jvm name="internet_jvm">
+                <heap size="1024m" max-size="1024m"/>
+                <permgen size="256m" max-size="256m"/>
+                <jvm-options>
+                    <option value="-Djava.library.path=/opt/ondemand/www/"/>
+                </jvm-options>
+            </jvm>
+            <socket-binding-group ref="presentacion-sockets"/>
+            <deployments>
+                <deployment name="SEEA001C.ear" runtime-name="SEEA001C.ear" enabled="false"/>
+                <deployment name="JRIN.ear" runtime-name="JRIN.ear"/>
+                <deployment name="JRIW.ear" runtime-name="JRIW.ear"/>
+                <deployment name="S1A1000C.ear" runtime-name="S1A1000C.ear"/>
+                <deployment name="SICC.ear" runtime-name="SICC.ear"/>
+                <deployment name="UJA0.ear" runtime-name="UJA0.ear"/>
+                <deployment name="YCEP.ear" runtime-name="YCEP.ear"/>
+                <deployment name="SIWB.ear" runtime-name="SIWB.ear"/>
+                <deployment name="IWGE.ear" runtime-name="IWGE.ear"/>
+                <deployment name="ROOT.war" runtime-name="ROOT.war"/>
+                <deployment name="SEEA002C.ear" runtime-name="SEEA002C.ear"/>
+                <deployment name="IFAB.ear" runtime-name="IFAB.ear"/>
+                <deployment name="TJWE.ear" runtime-name="TJWE.ear"/>
+                <deployment name="PJWB.ear" runtime-name="PJWB.ear"/>
+                <deployment name="activemq-rar.rar" runtime-name="activemq-rar.rar"/>
+                <deployment name="IRCW.ear" runtime-name="IRCW.ear"/>
+                <deployment name="SRMV.ear" runtime-name="SRMV.ear"/>
+                <deployment name="TYWB.ear" runtime-name="TYWB.ear"/>
+                <deployment name="KEIT.ear" runtime-name="KEIT.ear"/>
+                <deployment name="HRF3.ear" runtime-name="HRF3.ear"/>
+                <deployment name="UDIT.ear" runtime-name="UDIT.ear"/>
+                <deployment name="TK00.ear" runtime-name="TK00.ear"/>
+                <deployment name="GHAC.ear" runtime-name="GHAC.ear"/>
+                <deployment name="wmq.jmsra.rar" runtime-name="wmq.jmsra.rar"/>
+                <deployment name="HRCE.ear" runtime-name="HRCE.ear" enabled="false"/>
+                <deployment name="CGFW.ear" runtime-name="CGFW.ear"/>
+                <deployment name="CGSW.ear" runtime-name="CGSW.ear"/>
+                <deployment name="MFHT.ear" runtime-name="MFHT.ear"/>
+                <deployment name="SEVE.ear" runtime-name="SEVE.ear"/>
+                <deployment name="YCPA.ear" runtime-name="YCPA.ear"/>
+            </deployments>
+            <system-properties>
+                <property name="tcp_cluster.initial_host" value="172.27.230.164[7800],172.27.230.165[7800]" boot-time="false"/>
+                <property name="BIDE.ConfigPath" value="/var/jboss_config" boot-time="true"/>
+                <property name="org.apache.el.parser.COERCE_TO_ZERO" value="false" boot-time="false"/>
+                <property name="smrv.enviosms.username" value="WDWASMQ1" boot-time="true"/>
+                <property name="smrv.enviosms.password" value="h35053ti" boot-time="true"/>
+                <property name="smrv.enviosms.transportType" value="CLIENT" boot-time="true"/>
+                <property name="smrv.enviosms.port" value="1414" boot-time="true"/>
+                <property name="smrv.enviosms.queueManager" value="CSQ1" boot-time="true"/>
+                <property name="smrv.enviosms.hostName" value="db2server" boot-time="true"/>
+                <property name="smrv.enviosms.channel" value="DESA.SVRCONN.TCP" boot-time="true"/>
+                <property name="user.language" value="es" boot-time="true"/>
+                <property name="user.country" value="ES" boot-time="true"/>
+                <property name="logback.configurationFile" value="/var/jboss_config/config/BIDE/log/logback.xml" boot-time="false"/>
+            </system-properties>
+        </server-group>
+        <server-group name="negocio" profile="negocio">
+            <jvm name="negocio_jvm">
+                <heap size="1024m" max-size="1024m"/>
+                <permgen size="256m" max-size="256m"/>
+                <jvm-options>
+                    <option value="-server"/>
+                </jvm-options>
+            </jvm>
+            <socket-binding-group ref="ha-sockets"/>
+            <deployments>
+                <deployment name="LogbackTestEAR.ear" runtime-name="LogbackTestEAR.ear"/>
+                <deployment name="P23PruebaIntegradaWindowsEJBEAR.ear" runtime-name="P23PruebaIntegradaWindowsEJBEAR.ear"/>
+                <deployment name="N0SE000B.ear" runtime-name="N0SE000B.ear"/>
+                <deployment name="EO00SPTB.ear" runtime-name="EO00SPTB.ear"/>
+                <deployment name="testDummy.ear" runtime-name="testDummy.ear"/>
+                <deployment name="N3AD000B.ear" runtime-name="N3AD000B.ear"/>
+                <deployment name="N3GC000B.ear" runtime-name="N3GC000B.ear"/>
+                <deployment name="N3MO000B.ear" runtime-name="N3MO000B.ear"/>
+                <deployment name="DSTester.war" runtime-name="DSTester.war"/>
+                <deployment name="N3SM000B.ear" runtime-name="N3SM000B.ear"/>
+                <deployment name="N0VR000B.ear" runtime-name="N0VR000B.ear"/>
+                <deployment name="NMQS000B.ear" runtime-name="NMQS000B.ear"/>
+                <deployment name="NMQS001B.ear" runtime-name="NMQS001B.ear"/>
+                <deployment name="JREJ000B.ear" runtime-name="JREJ000B.ear"/>
+                <deployment name="JMSTest.war" runtime-name="JMSTest.war"/>
+                <deployment name="S1A1000B.ear" runtime-name="S1A1000B.ear"/>
+                <deployment name="N3FM000B.ear" runtime-name="N3FM000B.ear"/>
+                <deployment name="activemq-rar.rar" runtime-name="activemq-rar.rar"/>
+                <deployment name="N3MS000B.ear" runtime-name="N3MS000B.ear"/>
+                <deployment name="N0GL000B.ear" runtime-name="N0GL000B.ear"/>
+                <deployment name="SEES000B.ear" runtime-name="SEES000B.ear"/>
+                <deployment name="SEAD000B.ear" runtime-name="SEAD000B.ear"/>
+                <deployment name="S1A3000B.ear" runtime-name="S1A3000B.ear"/>
+                <deployment name="EWSC001B.ear" runtime-name="EWSC001B.ear"/>
+                <deployment name="ROOT.war" runtime-name="ROOT.war"/>
+                <deployment name="TESTREND.ear" runtime-name="TESTREND.ear" enabled="false"/>
+                <deployment name="EO00PPLB.ear" runtime-name="EO00PPLB.ear"/>
+                <deployment name="EO0BHSTB.ear" runtime-name="EO0BHSTB.ear"/>
+                <deployment name="NMGP000B.ear" runtime-name="NMGP000B.ear"/>
+                <deployment name="EWNT001B.ear" runtime-name="EWNT001B.ear"/>
+                <deployment name="EWRW000B.ear" runtime-name="EWRW000B.ear"/>
+                <deployment name="N5MP000B.ear" runtime-name="N5MP000B.ear"/>
+                <deployment name="N3RT000B.ear" runtime-name="N3RT000B.ear"/>
+                <deployment name="N3NU000B.ear" runtime-name="N3NU000B.ear"/>
+                <deployment name="N3VA000B.ear" runtime-name="N3VA000B.ear"/>
+                <deployment name="N3PE000B.ear" runtime-name="N3PE000B.ear"/>
+                <deployment name="UTCC000B.ear" runtime-name="UTCC000B.ear"/>
+                <deployment name="N9CD000B.ear" runtime-name="N9CD000B.ear"/>
+                <deployment name="EWNT002B.ear" runtime-name="EWNT002B.ear"/>
+                <deployment name="DCEO000B.ear" runtime-name="DCEO000B.ear"/>
+                <deployment name="SEAT000B.ear" runtime-name="SEAT000B.ear"/>
+                <deployment name="EWSF002B.ear" runtime-name="EWSF002B.ear"/>
+                <deployment name="EWFO001B.ear" runtime-name="EWFO001B.ear"/>
+                <deployment name="EWFO002B.ear" runtime-name="EWFO002B.ear"/>
+                <deployment name="N8DN000B.ear" runtime-name="N8DN000B.ear"/>
+            </deployments>
+            <system-properties>
+                <property name="tcp_cluster.initial_host" value="172.27.230.164[8300],172.27.230.165[8300]" boot-time="false"/>
+                <property name="BIDE.ConfigPath" value="/var/jboss_config" boot-time="false"/>
+                <property name="ejb.resource-adapter-name" value="jboss.ra.activemq-rar" boot-time="true"/>
+                <property name="logback.configurationFile" value="/var/jboss_config/config/BIDE/log/logback.xml" boot-time="false"/>
+            </system-properties>
+        </server-group>
+    </server-groups>
+
+</domain>

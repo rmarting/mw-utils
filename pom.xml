@@ -5,7 +5,7 @@
 	<artifactId>mw-utils</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jdk.target>1.7</jdk.target>
@@ -13,11 +13,23 @@
 
 	<modules>
 		<module>eap-manage-app</module>
+		<module>eap-export-configuration</module>
+		<module>JNDIObjectFactory</module>
 	</modules>
-	
+
+	<dependencies>
+		<!-- Test -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
 	<build>
 		<plugins>
-		<plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
